@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gd.dao.UserDao">
+	<!-- @means 通过用户名(idcard)和密码(password)查找用户，主要用于验证用户登录账户是否存在 @author phn -->
+	<select id="findByUserNamePass" parameterType="User" resultType="User">
+		select *
+		from user
+		where
+		user_cardid = #{user_cardid}
+		and
+		user_password =
+		#{user_password}
+	</select>
+	<!-- 注册 -->
+	<insert id="register" parameterType="User" useGeneratedKeys="true"
+		keyProperty="user_id">
+		insert into
+		user(user_cardid,user_password,user_nickname,active_status,validate_code,register_time,user_salt,user_locked)
+		values(#{user_cardid},#{user_password},#{user_nickname},#{active_status},#{validate_code},#{register_time},#{user_salt},#{user_locked})
+	</insert>
+	<!-- 激活 -->
+	<update id="activeRegister">
+		update user set active_status = #{activeStatus} where
+		user_cardid=#{email}
+	</update>
+	<!-- 重新发送激活邮件，设置激活验证码 -->
+	<update id="resetvalidateCode">
+		update user set validate_code = #{validatecode} where
+		user_cardid=#{email}
+	</update>
+	<!-- 设置找回密码需要的相关验证信息 -->
+	<update id="updateByFindPass">
+		update user set
+		password_validate_code=#{password_validate_code},
+		password_validate_status=#{password_validate_status},
+		password_validate_time=#{password_validate_time}
+		where
+		user_cardid=#{email}
+	</update>
+	<!-- 找回重设密码 -->
+	<update id="resetFindPass">
+		update user set
+		user_password=#{user_password},
+		password_validate_status=#{password_validate_status}
+		where
+		user_cardid=#{email}
+	</update>
+	<!-- 修改登录邮箱，即cardid -->
+	<update id="updateCardid">
+		update user set
+		user_cardid = #{resetEmail}
+		where
+		user_cardid = #{currentEmail}
+	</update>
+	<select id="findById" resultType="User">
+		select
+		user_id,user_university,user_academy,user_cardid,
+		user_startyear,user_nickname,user_truename,user_identitycard,
+		user_phone,user_picture,user_property,user_anno_unread
+		from user
+		where
+		user_id =#{user_id}
+	</select>
+	<select id="findByIdAndProperty" resultType="User">
+		select
+		user_id,user_university,user_academy,user_cardid,
+		user_startyear,user_nickname,user_truename,user_identitycard,
+		user_phone,user_picture,user_property,user_anno_unread
+		from user
+		where
+		user_id =#{user_id}
+		and
+		user_property = #{user_property}
+	</select>
+
+	<select id="testIsExist" resultType="User" parameterType="User">
+		select
+		user_id,user_university,user_academy,user_cardid,
+		user_startyear,user_nickname,user_truename,user_identitycard,
+		user_phone,user_picture,user_property,user_anno_unread
+		from user
+		where
+		user_cardid =#{user_cardid}
+		and
+		user_password = #{user_password}
+	</select>
+	<!-- 以下是hrz添加的shiro有关查询 -->
+	<insert id="createUser" parameterType="User">
+		insert into user
+		(user_cardid,user_password,user_salt,user_locked)
+		values(#{user_cardid},#{user_password},#{user_salt},#{user_locked})
+	</insert>
+	<select id="findOne" parameterType="long" resultType="User">
+		select *
+		from user where userId= #{userId}
+	</select>
+	<select id="findByCardId" parameterType="String" resultType="User">
+		select * from user where user_cardid =#{cardid}
+	</select>
+	<update id="updateUser" parameterType="User">
+		update user set
+		user_password = #{user_password},salt = #{user_salt} where
+		user_id =
+		#{user_id}
+	</update>
+	<delete id="deleteUser">
+		delete from user u,user_role ur where u.user_id =
+		ur.userid and user_id =
+		#{user_id}
+	</delete>
+
+	<insert id="correlationRoles">
+		insert into user_role(userid,roleid) values
+		<foreach collection="roleIds" item="item" index="index"
+			separator=",">
+			(#{userId},#{item})
+		</foreach>
+	</insert>
+
+	<delete id="uncorrelationRoles">
+		delete from user_role where userid =#{userId} and roleid in
+		<foreach collection="roleIds" item="item" index="index" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<select id="findRoles" resultType="String" parameterType="String">
+		select
+		role from role r,user u,user_role ur where u.user_id =ur.userid and
+		r.id = ur.roleid and u.user_cardid =#{username}
+	</select>
+
+	<select id="findPermissions" resultType="String" parameterType="String">
+		select permission from role r,user u,user_role ur,permission
+		p,role_permission rp where r.id =ur.roleid and u.user_id = ur.userid
+		and r.id = rp.roleid
+		and p.id = rp.permissionid and u.user_cardid
+		=#{username}
+	</select>
+	<!-- ===============================完美的分割线========================================= -->
+	<update id="update">
+	    update user set user_university = #{user.user_university},
+	    user_academy=#{user.user_academy},user_startyear=#{user.user_startyear},
+	    user_nickname=#{user.user_nickname},user_truename=#{user.user_truename},user_identitycard=#{user.user_identitycard},
+	    user_phone=#{user.user_phone} where user_cardid=#{email}
+	</update>
+</mapper>

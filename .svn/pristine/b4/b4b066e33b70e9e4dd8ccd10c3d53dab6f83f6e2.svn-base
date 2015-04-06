@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gd.dao.QuestionDao">
+	
+	
+	<parameterMap type="java.util.Map" id="pageMap">
+		<parameter property="id" mode="IN" javaType="long"/>
+		<parameter property="first" mode="IN" javaType="int"/>
+		<parameter property="pageSize" mode="IN" javaType="int"/>
+	</parameterMap>
+	
+	<insert id="addQuestion"  parameterMap="questionMap">
+		insert into question (ques_user_send_id,ques_user_rece_id,ques_idea_id,ques_rped_ques_id,ques_content,ques_time,ques_rece_read)
+		values(?,?,?,?,?,?,?)
+	</insert>
+	
+		<parameterMap type="java.util.Map" id="questionMap">
+			<parameter property="ques_user_send_id" mode="IN" javaType="long"  />
+			<parameter property="ques_user_rece_id" mode="IN" javaType="long"/>
+			<parameter property="ques_idea_id" mode="IN" javaType="long" />
+			<parameter property="ques_rped_ques_id" mode="IN" javaType="long" />
+			<parameter property="ques_content" mode="IN" javaType="String" />
+			<parameter property="ques_time" mode="IN" javaType="Date" />
+			<parameter property="ques_rece_read" mode="IN" javaType="boolean" />
+		</parameterMap> 
+	
+	<select id="listQuestionByUserReceId"  parameterMap="pageMap" resultMap="QuestionWithoutRece">
+		select * from question q,idea i,user u
+		where q.ques_idea_id = i.idea_id and q.ques_user_send_id = u.user_id and 
+		ques_user_rece_id = #{id} order by q.ques_time DESC
+		limit #{first},#{pageSize}
+	</select>
+	
+	<resultMap type="Question" id="QuestionWithoutRece">
+		<id column="ques_id" property="ques_id"/>
+		<result column="ques_content" property="ques_content"/>
+		<result column="ques_time" property="ques_time"/>
+		<result column="ques_rece_read" property="ques_rece_read"/>
+		<association property="ques_idea"  javaType="Idea">
+			<id column="idea_id" property="idea_id"/>
+			<id column="idea_name" property="idea_name"/>
+		</association>
+		<association property="ques_user_send" javaType="User">
+			<id column="user_id" property="user_id"/>
+			<result column="user_nickname" property="user_nickname"/>
+			<result column="user_picture" property="user_picture"/>
+		</association>
+		<association property="ques_rped_ques" javaType="Question" column="ques_rped_ques_id" select="listQuestionOnlyWithSend">
+		</association>
+	</resultMap>
+	
+	<select id="listQuestionOnlyWithSend" parameterType="long" resultMap="questionOnlyWithSend">
+	 select* from question
+	 where  ques_id = #{ques_rped_ques_id}
+	</select>
+	
+	<resultMap type="Question" id="questionOnlyWithSend">
+		<id column="ques_id" property="ques_id"/>
+		<result column="ques_content" property="ques_content"/>
+		<result column="ques_time" property="ques_time"/>
+		<result column="ques_rece_read" property="ques_rece_read"/>
+	</resultMap>
+	
+	<select id="listQuestionByUserSendId"  parameterMap="pageMap" resultMap="QuestionWithoutSend">
+		select * from question q,idea i,user u
+		where q.ques_idea_id = i.idea_id and q.ques_user_rece_id = u.user_id and 
+		ques_user_send_id = #{id} order by q.ques_time DESC
+		limit #{first},#{pageSize}
+	</select> 
+	
+	<resultMap type="Question" id="QuestionWithoutSend">
+		<id column="ques_id" property="ques_id"/>
+		<result column="ques_content" property="ques_content"/>
+		<result column="ques_time" property="ques_time"/>
+		<result column="ques_rece_read" property="ques_rece_read"/>
+		<association property="ques_idea"  javaType="Idea">
+			<id column="idea_id" property="idea_id"/>
+			<id column="idea_name" property="idea_name"/>
+		</association>
+		<association property="ques_user_rece" javaType="User">
+			<id column="user_id" property="user_id"/>
+			<result column="user_nickname" property="user_nickname"/>
+			<result column="user_picture" property="user_picture"/>
+		</association>
+		<association property="ques_rped_ques" javaType="Question" column="ques_rped_ques_id" select="listQuestionOnlyWithRece">
+		</association>
+	</resultMap>
+	
+	<select id="listQuestionOnlyWithRece" parameterType="long" resultMap="questionOnlyWithRece">
+	 select* from question
+	 where ques_id = #{ques_rped_ques_id}
+	</select>
+	
+	<resultMap type="Question" id="questionOnlyWithRece">
+		<id column="ques_id" property="ques_id"/>
+		<result column="ques_content" property="ques_content"/>
+		<result column="ques_time" property="ques_time"/>
+		<result column="ques_rece_read" property="ques_rece_read"/>
+	</resultMap>
+	
+	
+	<select id="listQuestionByIdeaId"  parameterMap="pageMap" resultMap="listQuestionByIdeaIdMap">
+			select q1.ques_id, q1.ques_content,q1.ques_time,q1.ques_rece_read,
+			u1.user_id u1_user_id,u1.user_nickname u1_user_nickname,u1.user_picture u1_user_picture,
+			u2.user_id u2_user_id,u2.user_nickname u2_user_nickname,u2.user_picture u2_user_picture
+			from question q1,user u1,user u2
+			where q1.ques_idea_id = #{id} and q1.ques_user_send_id = u1.user_id and q1.ques_user_rece_id = u2.user_id
+			ORDER BY q1.ques_time DESC 
+			limit #{first},#{pageSize}
+	</select> 
+	
+	<resultMap type="Question" id="listQuestionByIdeaIdMap">
+		
+		 <id column="ques_id" property="ques_id"/>
+		<result column="ques_content" property="ques_content"/>
+		<result column="ques_time" property="ques_time"/>
+		<result column="ques_rece_read" property="ques_rece_read"/>
+		<association property="ques_user_rece" javaType="User">
+			<id column="u2_user_id" property="user_id"/>
+			<result column="u2_user_nickname" property="user_nickname"/>
+			<result column="u2_user_picture" property="user_picture"/>
+		</association>
+		<association property="ques_user_send" javaType="User">
+			<id column="u1_user_id" property="user_id"/>
+			<result column="u1_user_nickname" property="user_nickname"/>
+			<result column="u1_user_picture" property="user_picture"/>
+		</association>
+	<collection property="ques_area_ques" ofType="Question" select="listQuestionByAreaId" column="ques_id">
+		
+	</collection>
+	</resultMap>
+	
+	<select id="listQuestionByAreaId"  parameterType="long" resultMap="listQuestionByAreaIdMap">
+			select q1.ques_id, q1.ques_content,q1.ques_time,q1.ques_rece_read,
+			u1.user_id u1_user_id,u1.user_nickname u1_user_nickname,u1.user_picture u1_user_picture,
+			u2.user_id u2_user_id,u2.user_nickname u2_user_nickname,u2.user_picture u2_user_picture
+			from question q1,user u1,user u2
+			where q1.ques_user_area_id = #{ques_id} and q1.ques_user_send_id = u1.user_id and q1.ques_user_rece_id = u2.user_id
+			ORDER BY q1.ques_time ASC
+	</select> 
+	
+	<resultMap type="Question" id="listQuestionByAreaIdMap">
+		<id column="ques_id" property="ques_id"/>
+		<result column="ques_content" property="ques_content"/>
+		<result column="ques_time" property="ques_time"/>
+		<result column="ques_rece_read" property="ques_rece_read"/>
+		<association property="ques_user_rece" javaType="User">
+			<id column="u2_user_id" property="user_id"/>
+			<result column="u2_user_nickname" property="user_nickname"/>
+			<result column="u2_user_picture" property="user_picture"/>
+		</association>
+		<association property="ques_user_send" javaType="User">
+			<id column="u1_user_id" property="user_id"/>
+			<result column="u1_user_nickname" property="user_nickname"/>
+			<result column="u1_user_picture" property="user_picture"/>
+		</association>
+	</resultMap>
+
+	<select parameterType="long" resultType="int" id="questionByReceIdCount">
+		select count(ques_id) from question where ques_user_rece_id = #{ques_user_rece_id}
+	</select>
+	<select parameterType="long" resultType="int" id="questionByIdeaIdCount">
+		select count(ques_id) from question where ques_idea_id = #{ques_idea_id}
+	</select>
+	<select parameterType="long" resultType="int" id="questionBySendIdCount">
+		select count(ques_id) from question where ques_user_send_id = #{ques_user_send_id}
+	</select> 
+	<delete id="deleteQuestionByIdeaId" parameterType="long">
+	    delete from question where ques_idea_id=#{idea_id}
+	</delete>
+</mapper>

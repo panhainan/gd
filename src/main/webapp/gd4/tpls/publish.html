@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>果动</title>
+	<meta	charset="utf-8">
+	<link rel="shortcut icon" href="../images/favicon.jpg">	
+	<link rel="stylesheet" type="text/css" href="../css/publish.css">
+
+	<script src="../framework/jquery-1.11.2.min.js"></script>
+    <script src="../framework/jquery.timepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="../framework/jquery.timepicker.css" />
+
+    <script src="../framework/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="../framework/bootstrap-datepicker.css" />
+
+	<script src="../framework/jquery.datepair.js"></script>
+
+	<script language="JavaScript" type="text/JavaScript">
+	    $(document).ready(function(){
+		  $("#next").click(function(){
+		  $("#content2").show();
+		  });
+		});	
+	</script>
+	
+</head>
+<body>
+<!-- if (document.getElementById){
+		    	target2=document.getElementById(targetid2);
+		        target1=document.getElementById(targetid1);
+		                target1.style.display="none";
+		                target2.style.display="block";
+		        return false; 
+		    } -->
+	<div>
+		<!-- 导航栏 -->
+		<div class="nav1-w"></div>
+		<!-- 中间内容 -->
+		<div id="content1" class="content-w content-w1">
+			<!-- left -->
+			<div class="content-left-w">
+				<!-- title -->
+				<div class="cont-headline-w"><h1>填写活动信息</h1></div>
+				<div class="cont-flow-w">
+					<span>1.填写活动信息</span>
+					<span>></span>  
+					<span>2.上传海报及宣传图片</span>
+					<span>></span>  
+					<span>3.提交活动</span>
+				</div>
+
+				<!-- 活动信息form表单 -->
+				<form>
+					<div class="cont-classify-w style-w">
+						<label>活动分类:</label>
+						<div class="act-classify-w">
+							<select id="acti_type" class="" name="">
+								<option value="00">请选择</option>
+								<option value="10">电影</option>
+								<option value="11">讲座</option>
+								<option value="12">音乐</option>
+								<option value="13">派对</option>
+								<option value="14">旅游</option>
+								<option value="15">运动</option>
+								<option value="16">比赛</option>
+								<option value="17">竞技</option>
+								<option value="99">其他</option>	
+							</select>
+						</div>
+					</div>
+
+					<div class="cont-title-w style-w">
+						<label>标题:</label>
+						<input id="input-info" type="text" name="" value="">
+					</div>
+
+					<div class="cont-time-w style-w">
+						<label>活动时间:</label>
+						<p id="basicExample" >
+						    <input onfocus="if (value =='日期'){value =''}" onblur="if (value ==''){value='日期'}" value="日期" type="text" class="date start"  />
+						    <input onfocus="if (value =='时间'){value =''}" onblur="if (value ==''){value='时间'}" value="时间" type="text" class="time start" /> &nbsp;&nbsp;到&nbsp;&nbsp;
+						    <input type="text" class="time end" />
+						    <input type="text" class="date end" />
+						</p>
+						<script>
+						    // initialize input widgets first
+						    $('#basicExample .time').timepicker({
+						        'showDuration': true,
+						        'timeFormat': 'g:ia'
+						    });
+
+						    $('#basicExample .date').datepicker({
+						        'format': 'm/d/yyyy',
+						        'autoclose': true
+						    });
+
+						    // initialize datepair
+						    $('#basicExample').datepair();
+						</script>
+					</div>
+
+					<div class="cont-address-w style-w">
+						<label>活动地点:</label>
+						<input id="input-info"  type="text" name="" value="">
+					</div>
+
+					<div class="cont-poster-w style-w">
+						<label>活动简介:</label>
+						<input id="input-info"  type="text" name="" value="">
+					</div>
+
+					<div class="cont-details-w style-w">
+						<label>活动详情:</label>
+						<textarea></textarea>
+					</div>
+
+					<div class="cont-label-w style-w">
+						<label>活动标签:</label>
+						<input style="opacity:0.5;" onfocus="if (value =='多个标签用空格隔开'){value =''}" onblur="if (value ==''){value='多个标签用空格隔开'}" value="多个标签用空格隔开" id="input-info"  type="text"  name="" value="">
+					</div>
+
+				</form>
+
+					<div class="next"><button class="button1"  id="next"  style="color='red' href="#icp" "> 下一步:上传活动海报 </button></div>
+					<div class="cancel"><button id="cancel" style="color='red'"> 取 消 </button></div>
+							
+			</div>
+			<!-- right -->
+			<div class="content-right-w">
+					<h2>请确保您的活动符合法律规定：</h2>
+					<p class="pl">按照相关法律规定，营业性演出活动需取得国家行政部门审批，请确保你的活动已经获得相关资质及许可。未获上述批准的活动将被依法删除，且由此造成的后果须由活动举办方自行承担。</p>
+					<br>
+					<h2>什么是合适的同城活动？</h2>
+					<ol class="pl">
+					    <li>有能最终确定的活动起止日期</li>
+					    <li>具备现实中能集体参与的活动地点</li>
+					    <li>是多人在现实中能碰面的活动</li>
+					</ol>
+					<p class="pl">如果是多人的线上活动，如”一起制作自己的大头像“吧，请去专门的”<a href="#">线上活动</a>“创建。</p>
+					<br>
+					<h2>如何才能让你的活动更吸引人？</h2>
+					<ol class="pl">
+					    <li>标题简单明了 </li>
+					    <li>活动内容和特点介绍详细</li>
+					    <li>活动海报吸引人眼球 </li>
+					</ol>
+					<p class="pl"> 更重要的是，邀请好友们都来参与！</p>
+			</div>
+
+		<div id="content2" class="content-w content-w2">
+			<!-- left -->
+			<div class="content-left-w">
+				<!-- title -->
+				<div class="cont-headline-w"><h1>上传海报及宣传图片</h1></div>
+				<div name="icp" class="cont-flow-w">
+					<span>1.填写活动信息</span>
+					<span>></span>  
+					<span>2.上传海报及宣传图片</span>
+					<span>></span>  
+					<span>3.提交活动</span>
+				</div>
+
+
+
+
+
+				<!-- 活动信息form表单 -->
+				<form>
+
+					<div class="pic">
+						
+					</div>
+					<div class="pic2">
+						<h2>从电脑中选择你喜欢的照片:</h2>
+						<p class="pl">你可以上传JPG、JPEG、GIF、PNG或BMP文件。</p>
+						<input type="file">	
+						<div class="next"><button style="color='red'"> 上传照片 </button></div>
+						<div class="cancel"><button id="cancel" style="color='red'"> 以后再说 </button></div>					
+					</div>					
+
+
+										
+				</form>		
+			</div>
+			<!-- right -->
+			<div class="content-right-w">
+					<h2>让你的活动更吸引人！</h2>
+					<p class="pl">用一张适合的图片代表你的活动，即使你没有专业的设计师。</p>
+					<p class="pl">随意拖拽或调整大图中的虚线区域，预览小图即为裁切后的效果。</p>
+					<p class="pl">高宽比为3:2的图片会得到最完整的显示。</p>
+					<br>
+					<h2>更重要的是，邀请好友们都来参与！</h2>
+			</div>
+
+		</div>
+
+		<!-- 最下部信息 -->
+		<div class="bottom">
+			<div class="hidden-sm">
+				<span  id="icp" class="fleft gray-link">
+				    © 2005－2015 douban.com, all rights reserved
+				</span>
+
+				<a href="#" style="display: none;"></a>
+
+				<span class="fright">
+				    <a href="#">关于豆瓣</a>
+				    · <a href="#">在豆瓣工作</a>
+				    · <a href="#">联系我们</a>
+				    · <a href="#">免责声明</a>
+				    
+				    · <a href="#">帮助中心</a>
+				    · <a href="#" target="_blank">开发者</a>
+				    · <a href="#">手机同城</a>
+				    · <a href="#">豆瓣广告</a>
+				</span>
+    		</div>
+		</div></div>
+	
+</div>
+
+</body>
+</html>

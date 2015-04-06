@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gd.dao.LetterDao">
+
+	<insert id="addLetter"  parameterMap="LetterMap">
+		insert into letter (lett_user_send_id,lett_user_rece_id,lett_content,lett_time,lett_rece_read)
+		values(?,?,?,?,?)
+	</insert>
+	
+		<parameterMap type="java.util.Map" id="LetterMap">
+			<parameter property="lett_user_send_id" mode="IN" javaType="long"  />
+			<parameter property="lett_user_rece_id" mode="IN" javaType="long"/>
+			<parameter property="lett_content" mode="IN" javaType="String" />
+			<parameter property="lett_time" mode="IN" javaType="Date" />
+			<parameter property="lett_rece_read" mode="IN" javaType="boolean" />
+		</parameterMap> 
+	
+	<select id = "checkLetterHistory" resultMap="LetterHistory" parameterMap="peopleMap">
+			select * from letter where ( lett_user_send_id =#{people1_id} and lett_user_rece_id = #{people2_id}) or 
+			( lett_user_send_id =#{people2_id} and lett_user_rece_id = #{people1_id}) order by lett_time asc
+	</select>
+	 <resultMap id="LetterHistory" type="Letter">
+	 		<id column="lett_id" javaType="long"/>
+	 		<result column="lett_content" property="lett_content" javaType="String"/>
+	 		<result column="lett_time" property="lett_time" javaType="Date"/>
+	 		<result column="lett_rece_read" property="lett_rece_read" javaType="boolean"/>
+	 		<association property="lett_user_send" javaType="User">
+	 			<id column="lett_user_send_id" property="user_id" javaType="long"/>
+	 		</association>
+	 		<association property="lett_user_rece" javaType="User">
+	 			<id column="lett_user_rece_id" property="user_id" javaType="long"/>
+	 		</association>
+	 </resultMap>
+	<parameterMap type="java.util.Map" id="peopleMap">
+			<parameter property="people1_id" mode = "IN" javaType="long"/>
+			<parameter property="people2_id" mode = "IN" javaType="long"/>
+	</parameterMap>
+</mapper>

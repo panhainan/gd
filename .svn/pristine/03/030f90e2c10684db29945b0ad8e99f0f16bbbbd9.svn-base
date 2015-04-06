@@ -1,0 +1,50 @@
+*{
+	margin:0px;
+	padding: 0px;
+}
+img{
+	border:0px;
+}
+.body1{
+	width: 100%;
+	height: 100%;
+	background-color:#6081B8;
+}
+a:link{
+
+	text-decoration: none;	
+}
+a:hover{
+	background-color:#5ABFFF;
+}
+.login-box-w{
+	width: 300px;
+	height: 400px;
+	margin:0px auto;
+	position: relative;
+	top: 120px;
+}
+.logo-w{
+	margin:0px auto;
+	width: 75%;
+	height: 177px;
+	margin-bottom: 23px;
+}
+.logo-w img{
+	text-align: center;
+}
+.logo-w a:hover{
+	background-color: #6081B8;
+}
+.m-register h5 {
+text-align: center;
+color: #fff;
+line-height: 23px;
+font-weight: normal;
+}
+h5 {
+font-size: 14px;
+font-family: 'Microsoft YaHei',Arial;
+font-weight: bold;
+}
+

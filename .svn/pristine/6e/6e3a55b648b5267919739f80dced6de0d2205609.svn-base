@@ -1,0 +1,58 @@
+.body1{
+	width: 100%;
+	height: 100%;
+	background-color:#6081B8;
+}
+a:link{
+
+	text-decoration: none;	
+}
+a:hover{
+	background-color:#5ABFFF;
+}
+
+.login-box-w{
+	width: 300px;
+	height: 400px;
+	margin:0px auto;
+	position: relative;
+	top: 120px;
+}
+
+.logo-w{
+	margin:0px auto;
+	width: 75%;
+	height: 177px;
+}
+.logo-w img{
+	text-align: center;
+}
+.logo-w a:hover{
+	background-color: #6081B8;
+}
+.account-w{
+	font: 15px Arial, Helvetica, sans-serif;
+	width: 266px;
+	float: left;
+	margin:5px 10px;
+	padding: 9px 5px;
+	border-radius: 6px;
+}
+.account-w{
+	margin-top: 25px;
+	margin-bottom: 38px;
+}
+.login-w{
+	color: #fff;
+	margin-left: 12px;
+	padding: 8px 115px;
+	border-radius: 6px;
+	background-color:#45A7E3;
+}
+*{
+	margin:0px;
+	padding: 0px;
+}
+img{
+	border:0px;
+}

@@ -1,0 +1,10 @@
+<html>    
+   <head>    
+      <meta http-equiv="content-type" content="text/html;charset=utf8">    
+   </head>    
+   <body>    
+       恭喜您成功注册！您的昵称为：<font color='red' size='16'>${USERNAME}</font>
+       点击下面链接激活账号，48小时生效，否则重新注册账号，链接只能使用一次，请尽快激活！</br>
+       <a href="${MAILCLICKURL}" target="_blank">${MAILCLICKURL}</a>
+   </body>    
+</html> 

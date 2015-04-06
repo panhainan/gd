@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>果动</title>
+	<meta	charset="utf-8">
+	<link rel="shortcut icon" href="../images/favicon.jpg">	
+	<link rel="stylesheet" type="text/css" href="../css/search.css">
+	<link rel="stylesheet" type="text/css" href="../css/nav.css">	
+	<script type="text/javascript" src="../framework/jquery-1.9.1/jquery.js"></script>
+	<script type="text/javascript" src="../framework/handlebars.js"></script>
+	<script type="text/javascript" src="../js/search.js"></script>
+
+</head>
+<body>
+<div>
+ <div id="gd-nav-location" class="nav">
+    <div class="nav-wrap">
+      <div class="nav-primary">
+        <div class="nav-search">
+            <fieldset>
+              <div class="inp">
+                <input id="searchtxt" name="searchTxt" size="22" title="搜索搜索你感兴趣的内容和人..." maxlength="60" autocomplete="off" value="" placeholder="搜索搜索你感兴趣的内容和人..."></div>
+              <div class="inp-btn">
+                <input type="submit" value="搜索" id="search" onclick="search()"></div>
+            </fieldset>
+        </div>
+        <div class="nav-logo">
+          <a href="http://www.douban.com">豆瓣社区</a>
+        </div>
+        <div class="nav-items">
+          <ul>
+            <li>
+              <a href="../index.html">首页</a>
+            </li>
+            <li>
+              <a href="http://www.douban.com/explore/">分类</a>
+            </li>
+            <li>
+              <a href="activityList.html">热门活动</a>
+            </li>
+            <li>
+              <a href="http://www.douban.com/online/">私信</a>
+            </li>
+            <li>
+              <a href="personal.html">个人中心</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+	<!-- 第一导航栏 -->
+	<!-- <div class="nav1-w"></div> -->
+	<!-- 第二导航栏 -->
+	<!-- <div class="nav2-w"></div> -->
+	<!-- 中间内容 -->
+	<div class="content-w">
+		<!-- 中间左边 -->
+		<div class="content-left-w" id="content-left-w">
+			
+
+		</div>
+		<!-- 中间右边 -->
+		<div class="content-right-w">
+			<div>
+				<ul>
+					<li>> <a href="#">查看全省关于陈奕迅的活动</a></li>
+					<li>> <a href="#">查看全校关于陈奕迅的活动</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- 最下部信息 -->
+		<div class="bottom"></div>
+	</div>
+</div>
+<!-- 调入时间转换函数 -->
+<script type="text/javascript" src="../js/format.js"></script>
+<!-- 活动图片及详解模板 -->
+<script id="search-template" type="text/x-handlebars-template">
+	
+			<div class="hd-w">
+				<h2><strong id="">陈奕迅</strong> 同城相关的活动</h2>
+				<div class="select-w"><a href="">可参加</a>&nbsp;|&nbsp;<a href="">已结束</a></div>
+			</div>
+	{{#each this}}
+			<div class="">
+				<ul>
+					<li><div class="article-w">					
+						<div class="pic-w">
+							<a href="#"><img src="{{acti_poster}}"></a>
+						</div>
+						<div class="info-w">
+							<a class="title-w" href="">{{acti_name}}</a>
+							<ul>
+								<li class="">
+						          {{formatDate acti_starttime}}--{{formatDate acti_endtime}}
+						          <span class="">&nbsp;|&nbsp;</span>{{acti_address}}
+						          <span class="">&nbsp;|&nbsp;</span>
+						            <a href="#">{{acti_fath}}</a>
+						         </li>
+          
+						         <li class="search-pic-w">
+							         <a href="#" title="" class="img-link">
+							           <img width="70" src="{{acti_otherpic1}}" alt="活动图片">
+							         </a>
+							         <a href="#" title="" class="">
+							           <img width="70" src="{{acti_otherpic2}}" alt="活动图片">
+							          </a>
+							          <a href="#" title="" class="img-link">
+							            <img width="70" src="{{acti_otherpic3}}" alt="活动图片">
+							          </a>
+						          </li>
+						          <li class="">
+						          <span>标签：</span>
+						            <a href="#" class="">Search</a> · <a href="#" class="">{{acti_type}}</a> · <a href="#" class="#">{{acti_fath}}</a>
+						          </li>
+						          <li class="">
+						          <a href="#" class="#"><span class="#">{{acti_join}}</span>人要参加</a>
+						          &nbsp;&nbsp;<a href="#" class="#"><span class="#">{{acti_support}}</span>人感兴趣</a>
+						          &nbsp;&nbsp;<a href="#" class="#"><span class="#">2</span>张照片</a>
+						          &nbsp;&nbsp;<a href="#" class="#"><span class="">4</span>条讨论</a>
+						          </li>
+						    </ul>
+						</div>
+					</div></li>
+				</ul>
+			</div>
+	{{/each}}
+</script>
+</body>
+</html>

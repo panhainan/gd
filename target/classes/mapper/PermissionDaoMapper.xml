@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gd.dao.PermissionDao">
+	<insert id="createPermission" parameterType="Permission" >
+		insert into permission(permission,description,available) values(#{permission},#{description},#{available})
+	</insert>
+	
+	<delete id="deleteRolePermission" parameterType="long">
+	    delete from role_permission where permissionid = #{permissionId}
+	</delete>
+	
+	<delete id="deletePermission" parameterType="long">
+	    delete from permission  where id = #{permissionId}
+	</delete>
+</mapper>

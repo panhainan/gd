@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>果动</title>
+	<meta	charset="utf-8">
+	<link rel="shortcut icon" href="../images/favicon.jpg">
+	<link rel="stylesheet" type="text/css" href="../css/event.css">
+	<link rel="stylesheet" type="text/css" href="../css/nav.css">
+	<script type="text/javascript" src="../framework/jquery-1.9.1/jquery.js"></script>
+	<script type="text/javascript" src="../js/handlebars-v3.0.0.js"></script>
+</head>
+<body>
+	<div class="body">
+		<!-- 导航部分 -->
+		<div id="gd-nav-location" class="nav">
+			<div class="nav-wrap">
+				<div class="nav-primary">
+					<div class="nav-search">
+						<form action="http://www.douban.com/search" method="get">
+							<fieldset>
+								<div class="inp">
+									<input id="Search" name="q" size="22" title="搜索搜索你感兴趣的内容和人..." maxlength="60"autocomplete="off" value="" placeholder="搜索搜索你感兴趣的内容和人..."></div>
+									<div class="inp-btn">
+										<input type="submit" onclick="Search()" value="搜索"></div>
+									</fieldset>
+								</form>
+							</div>
+							<div class="nav-logo">
+								<a href="http://www.douban.com">豆瓣社区</a>
+							</div>
+							<div class="nav-items">
+								<ul>
+									<li>
+										<a href="../index.html">首页</a>
+									</li>
+									<li>
+										<a href="http://www.douban.com/explore/">分类</a>
+									</li>
+									<li>
+										<a href="activityList.html">热门活动</a>
+									</li>
+									<li>
+										<a href="http://www.douban.com/online/">私信</a>
+									</li>
+									<li>
+										<a href="personal.html">个人中心</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 中间全部内容 -->
+				<div class="content-w">
+					<!-- 中间左边 -->
+					<div class="content-left-w">
+						<!-- 中间内容 -->
+						<div id="eventList">
+						</div>
+						<!-- 标题 -->
+						<div class="event-title-w"><h2>活动评论</h2></div>
+						<div id="itemList">
+						</div>
+						<!-- 活动评论框 -->
+						<div class="item">
+							<a name="textarea"><textarea id="disc_content"></textarea></a>
+						</div>
+						<div class="event-interested-w">
+							<a  class="forum" href="">来一发</a>
+						</div>
+					</div>
+
+					<!-- 中间右边 -->
+					<!-- <div class="content-right-w"></div> -->
+					<!-- 最下部信息 -->
+					<!-- <div class="bottom"></div> -->
+				</div><!-- 中间全部内容结束 -->
+			</div>
+			<!-- 调入时间转换函数 -->
+			<script type="text/javascript" src="../js/format.js"></script>
+			<!-- 活动图片及详解模板 -->
+			<script id="event-template" type="text/x-handlebars-template">
+				{{#each this}}
+				<!-- 带图片的简介 -->
+				<div class="top-intro-w">
+					<!-- 图片 -->
+					<div class="image-intro">
+						<a href="#"><img src="{{acti_poster}}"></a>
+					</div>
+					<!-- 图片右边文字介绍（右上） -->
+					<div class="event-info">
+						<!-- 标题 -->
+						<div class="title-w">
+							<h1 class="acti-name" id="{{acti_id}}">{{acti_name}}</h1>
+						</div>
+						<!-- 介绍内容 -->
+						<div class="title-content-w">
+							<ul>
+								<li><span>时间:</span>
+									{{formatDate acti_starttime}}--{{formatDate acti_endtime}}</li>
+									<li><span>地点:</span>{{acti_address}}</li>
+									<li><span>费用:</span>35元（预售票） 45元（现场票）</li>
+									<li><span>类型:</span><a href="#">{{acti_type}}</a></li>
+									<li><span>发起人:</span><a href="#">{{acti_user.user_nickname}}</a></li>
+								</ul>
+							</div>
+						</div>
+						<!-- 图片右边用户动态（右下） -->
+						<div class="event-act-w"><strong>{{acti_support}}</strong>人感兴趣 <strong>{{acti_join}}</strong>人参加</div>
+						<!-- 图片右边用户传播（右下） -->
+						<div class="event-spread-w">
+							<div class="event-interested-w">
+								<a class="interested-w" href="#">我感兴趣</a>
+								<a join-w href="#">我要参加</a>
+							</div>
+							<div class="event-share-w recommend-w">
+								<a  href="#">推荐</a>
+							</div>
+							<div class="event-share-w share-w">
+								<a  href="#">分享到</a>
+							</div>
+						</div>
+					</div>
+					<!-- 活动详情 -->
+					<div class="event event-details">
+						<div class="event-title-w"><h2>活动详情</h2></div>
+						<div class="wr-w">
+							{{acti_summary}}
+							<br><br>
+							{{acti_content}}
+
+						</div>
+					</div>			
+					{{/each}}
+			</script>
+				<!-- 活动评论的模板 -->
+<script id="item-template" type="text/x-handlebars-template">
+	{{#each this}}
+	<!-- 活动评论 -->
+		<div class="event event-forum">
+			<div class="discuss">
+			<ul>
+			  	<li>
+					<div class="discuss-a" id="{{disc_id}}">
+					 	{{#with disc_user_send}}
+							<div><a href="{{user_id}}" id="{{user_id}}"><img src="{{user_picture}}"></a></div>
+							<div class="dis-conte">
+							<a id="{{user_id}}" href="">{{user_nickname}}:</a> 
+						{{/with}}				
+							<span class="disc_user_send" id="{{disc_id}}" >{{disc_content}}</span>
+							<br/>
+							{{formatDate disc_time}}&nbsp; 
+						{{#with disc_user_send}}
+							<a name="{{user_id}}"
+						{{/with}}
+							id="{{disc_id}}" href="#textarea" onclick="getId(this.name,this.id)">评论</a>					
+						</div>
+
+						{{#with disc_area_disc}}
+							{{#each this}}
+							<div id="null" class="discuss-b">
+								{{#with disc_user_send}}
+									<div>
+										<a href=""><img src="{{user_picture}}"></a>
+									</div>
+									<div class="dis-conte">
+										<a  href="">{{user_nickname}}</a>
+								{{/with}}
+								{{#with disc_user_rece}}
+									评论<a class="disc_user_rece" id="{{user_id}}" href=""> {{user_nickname}} :</a> 
+								{{/with}}
+									<span class="disc_rped_disc" id="{{disc_id}}"> {{disc_content}}</span><br/>
+									{{formatDate disc_time}} &nbsp; 
+								{{#with disc_user_send}}
+										<a name="{{user_id}}"
+								{{/with}}
+									 id="{{../../disc_id}}" href="#textarea" onclick="getId(this.name,this.id)">评论</a>
+								</div>
+							</div>
+							{{/each}}	
+						{{/with}}										
+					</div>
+			  	</li>							
+			</ul>						
+			</div>
+		</div>		
+	{{/each}}
+</script>
+<!--进行数据处理、html构造-->
+<script type="text/javascript" src="../js/event.js"></script>
+</body>
+</html>

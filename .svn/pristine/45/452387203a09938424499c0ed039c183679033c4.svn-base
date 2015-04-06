@@ -1,0 +1,115 @@
+*{
+	margin:0px;
+	padding: 0px;
+	list-style-type:none;
+}
+a,img{border:0;text-decoration:none;color: #5174AE;}
+body {
+	color: #626262;
+	text-align: left;
+	font: 15px Arial, Helvetica, sans-serif;
+}
+.header_in {
+	width: 978px;
+	margin: 0 auto;
+}
+p {
+line-height: 18px;
+font-size: 12px;
+wordrap: breakord;
+}
+.header{
+	width: 100%;
+	min-height: 85px;
+	clear: both;
+	background: #fff url(../images/header_bg.png) repeat-x bottom;
+	border:1px solid #C1D3ED;
+}
+.header_in{
+	min-height: 85px;
+}
+.logo {
+	margin-top: 13px;
+	overflow: hidden;
+	float: left;
+}
+/*登录注册*/
+.register{
+	margin-top: 40px;
+	float: right;
+}
+.register ul li{
+	float: right;
+	list-style: none;
+}
+
+.register ul li a{
+	color: #AEAFB9;
+	font: bold 15px Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	/*text-shadow: 1px 1px 1px #09F5F5;*/
+}
+.register ul li a:hover{
+	color: #5A5B64;	
+}
+.search{
+	margin-right: 66px;
+	padding:36px 50px 0px 20px;
+	float: right;
+	width: 260px;
+}
+fieldset{
+	width: 	300px;
+	border-radius: 16px;
+	opacity: 0.5;
+}
+.search input {
+	width: 258px;
+	border: 0px;
+	float: left;
+	margin:6px 2px 6px 5px;
+	font-size: 15px;
+	color: #626262;
+}
+.search input{outline: none;}
+.search button {
+	margin:6px 11px 2px 2px; 
+	float: right;
+	cursor: pointer;
+	border: 0px;
+	width: 19px;
+	height: 18px;
+	background: url(../images/i_search.png) no-repeat;
+}
+.activi{	
+	margin:0px auto;
+	margin-top:125px;
+	width: 60%;
+}
+.activi img{
+	width: 100px;
+	height: 100px;
+	float: left;
+}
+.text{
+	margin:36px 0px 0px 70px;
+	font: 15px Arial, Helvetica, sans-serif;
+	text-align: center;
+	float: left;
+}
+.copyright{
+	float: left;
+}
+.credits{
+	float: right;
+}
+/*.footer_in{
+	width: 777px;
+	margin:15px auto;
+	position: relative;
+	right: 97px;
+}*/
+.footer_in{
+	width: 100%;
+}
+

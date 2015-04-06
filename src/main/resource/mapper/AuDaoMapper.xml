@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gd.dao.AuDao">
+	<resultMap type="Au" id="AuForFindByActiId">
+		<association property="au_acti" column="au_acti_id"
+			select="SelectActiIdAndNameById">
+		</association>
+		<association property="au_user" column="au_user_id"
+			select="SelectUserIdAndNameById">
+		</association>
+	</resultMap>
+	<resultMap type="Au" id="AuForFindById">
+		<association property="au_acti" column="au_acti_id"
+			select="SelectActiIdAndNameById">
+		</association>
+		<association property="au_user" column="au_user_id"
+			select="SelectUserIdAndNameById">
+		</association>
+	</resultMap>
+	<resultMap type="Au" id="AuForFindByActiIdAndUserId">
+		<association property="au_acti" column="au_acti_id"
+			select="SelectActiIdAndNameById">
+		</association>
+		<association property="au_user" column="au_user_id"
+			select="SelectUserIdAndNameById">
+		</association>
+	</resultMap>
+	
+	
+	
+	<select id="SelectUserIdAndNameById" resultType="User">
+		select
+		user_id,user_nickname,user_picture,user_property
+		from user
+		where
+		user_id = #{au_user_id}
+	</select>
+	<select id="SelectActiIdAndNameById" resultType="Activity">
+		select
+		acti_id,acti_name,acti_starttime,acti_endtime,acti_address
+		from activity
+		where
+		acti_id = #{au_acti_id}
+	</select>
+	<select id="findCommentedByActiId" parameterType="long" resultMap="AuForFindByActiId">
+		select
+		au_id,au_acti_id,au_user_id,au_eval_score,
+		au_eval_content,au_eval_time,au_eval_support
+		from au
+		where au_comment=1
+		and
+		au_acti_id= #{acti_id}
+	</select>
+	<select id="findByActiIdAndUserId" resultMap="AuForFindByActiIdAndUserId">
+		select
+		au_id,au_acti_id,au_user_id,au_join,au_arrive,au_comment,au_eval_support
+		from au
+		where
+		au_user_id = #{user_id}
+		and
+		au_acti_id=
+		#{acti_id}
+	</select>
+	<insert id="addAuByJoin" useGeneratedKeys="true" parameterType="Au"
+		keyProperty="au_id">
+		insert into au(au_acti_id,au_user_id,au_join)
+		values(#{au_acti.acti_id},#{au_user.user_id},#{au_join})
+	</insert>
+	
+	<insert id="addAuBySupport" useGeneratedKeys="true" parameterType="Au"
+		keyProperty="au_id">
+		insert into au(au_acti_id,au_user_id,au_eval_support)
+		values(#{au_acti.acti_id},#{au_user.user_id},#{au_eval_support})
+	</insert>
+	
+	<update id="updateAuJoined" parameterType="Au">
+		update au
+		set
+		au_join = #{au_join}
+		where
+		au_acti_id = #{au_acti.acti_id}
+		and 
+		au_user_id = #{au_user.user_id}
+	</update>
+
+	<update id="updateAuArrived" parameterType="Au" >
+		update au
+		set
+		au_arrive = #{au_arrive}
+		where
+		au_acti_id = #{au_acti.acti_id}
+		and 
+		au_user_id = #{au_user.user_id}
+	</update>
+	<update id="updateAuCommented" parameterType="Au">
+		update au
+		set
+		au_comment = #{au_comment},
+		au_eval_content = #{au_eval_content},
+		au_eval_score = #{au_eval_score}
+		where
+		au_acti_id = #{au_acti.acti_id}
+		and 
+		au_user_id = #{au_user.user_id}
+	</update>
+	
+	<update id="updateAuSupported" parameterType="Au">
+		update au
+		set
+		au_eval_support = #{au_eval_support}
+		where
+		au_acti_id = #{au_acti.acti_id}
+		and 
+		au_user_id = #{au_user.user_id}
+	</update>
+	
+	<select id="findById" parameterType="long" resultMap="AuForFindById">
+		select *
+		from au where au_id = #{au_id}
+	</select>
+	
+	<!-- 下面两个select使用的map -->
+	<resultMap type="Au" id="AuForJoinedOrArrived">
+		<association property="au_acti" column="au_acti_id"
+			select="SelectActiIdAndNameById">
+		</association>
+	</resultMap>
+	<!-- 获取当前用户的所有已报名但是未参加的活动  -->
+	<select id="getJoinedUnArrivedActivity" resultMap="AuForJoinedOrArrived">
+		select * from au where au_user_id=#{userId} and au_join=#{isJoined} and au_arrive=#{isArrived}
+	</select>
+	<!-- 获取当前用户的所有已签到的活动,查询结构与上述方法类似，但是为了便于以后修改，没有共用。 -->
+	<select id="getArrivedActivty" resultMap="AuForJoinedOrArrived">
+		select * from au where au_user_id=#{userId} and au_join=#{isJoined} and au_arrive=#{isArrived}
+	</select>
+	<!-- 获取当前用户所有已报名的活动 -->
+	<select id="getAllJoinedActivity" resultMap="AuForJoinedOrArrived">
+		select * from au where au_user_id=#{userId} and au_join=#{isJoined}
+	</select>
+</mapper>

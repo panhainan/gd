@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gd.dao.ActivityDao">
+	<resultMap type="Activity" id="ActivityWithUserNameAndId">
+		<association property="acti_user" column="acti_user_id"
+			select="SelectUserIdAndNameAndSchoolPicPropertyById">
+		</association>
+	</resultMap>
+	<select id="SelectUserIdAndNameAndSchoolPicPropertyById"
+		resultType="User">
+		select
+		user_id,user_nickname,user_university,user_picture,user_property from
+		user
+		where
+		user_id =
+		#{acti_user_id}
+	</select>
+
+	<!-- *************************模糊查询开始*********************** -->
+	<parameterMap type="java.util.Map" id="getAllRecordFuzzyQueryPagingParamsMap">
+		<parameter property="searchTxt" mode="IN" javaType="String" />
+	</parameterMap>
+	<parameterMap type="java.util.Map" id="fuzzyQueryPagingParamsMap">
+		<parameter property="searchTxt" mode="IN" javaType="String" />
+		<parameter property="currentPageOffset" mode="IN" javaType="int" />
+		<parameter property="pageSize" mode="IN" javaType="int" />
+	</parameterMap>
+	<select id="getFuzzyQueryPagingAcitivityAllRowCount"
+		parameterMap="getAllRecordFuzzyQueryPagingParamsMap" resultType="int">
+		<![CDATA[ 
+			select
+			count(*)
+			from activity
+			where
+			acti_name like concat('%',concat(#{searchTxt},'%'))
+			or
+			acti_summary like concat('%',concat(#{searchTxt},'%'))
+			or
+			acti_type like concat('%',concat(#{searchTxt},'%'))
+	 		or 
+	 		acti_address like concat('%',concat(#{searchTxt},'%'))
+		 ]]>
+	</select>
+	<select id="fuzzyQueryPagingAcitivity" parameterMap="fuzzyQueryPagingParamsMap"
+		resultMap="ActivityWithUserNameAndId">
+		<![CDATA[ 
+			select
+			acti_id,acti_name,acti_user_id,acti_poster,acti_summary,acti_support,acti_join,acti_type,acti_newtime,acti_starttime,acti_endtime		
+			from activity
+			where
+			acti_name like concat('%',concat(#{searchTxt},'%'))
+			or
+			acti_summary like concat('%',concat(#{searchTxt},'%'))
+			or
+			acti_type like concat('%',concat(#{searchTxt},'%'))
+	 		or 
+	 		acti_address like concat('%',concat(#{searchTxt},'%'))
+	 		limit ${currentPageOffset},${pageSize}
+		 ]]>
+	</select>
+	<!-- *************************模糊查询结束*********************** -->
+
+
+
+
+	<!-- *************************多条件查询开始*********************** -->
+	<parameterMap type="java.util.Map" id="getAllRecordMultiConditionParamsMap">
+		<parameter property="userUniversity" mode="IN" javaType="String" />
+		<parameter property="activityType" mode="IN" javaType="String" />
+		<parameter property="workingTime" mode="IN" javaType="Date" />
+		<parameter property="currentTime" mode="IN" javaType="Date" />
+	</parameterMap>
+	<parameterMap type="java.util.Map" id="multiConditionParamsMap">
+		<parameter property="userUniversity" mode="IN" javaType="String" />
+		<parameter property="activityType" mode="IN" javaType="String" />
+		<parameter property="workingTime" mode="IN" javaType="Date" />
+		<parameter property="currentTime" mode="IN" javaType="Date" />
+		<parameter property="currentPageOffset" mode="IN" javaType="int" />
+		<parameter property="pageSize" mode="IN" javaType="int" />
+	</parameterMap>
+	<!-- 多条件查询并分页1：获取总的记录数 -->
+	<select id="getMultiConditionFindPagingActivityAllRowCount"
+		parameterMap="getAllRecordMultiConditionParamsMap" resultType="int">
+		<![CDATA[ 
+			select
+			count(*)
+			from user,activity acti
+			where
+			acti.acti_user_id = user.user_id
+			and
+			user.user_university like concat('%',concat(#{userUniversity},'%'))
+			and
+			acti.acti_type like concat('%',concat(#{activityType},'%'))
+	 		and 
+	 		(
+	 			(	
+	 				acti.acti_starttime <= DATE_FORMAT(#{workingTime,jdbcType=TIMESTAMP},'%Y-%m-%d')
+	 				and
+	 				acti.acti_endtime >=  DATE_FORMAT(#{workingTime,jdbcType=TIMESTAMP},'%Y-%m-%d')
+	 			)
+	 			or
+	 			(
+	 				acti.acti_endtime >= DATE_FORMAT(#{currentTime,jdbcType=TIMESTAMP},'%Y-%m-%d')
+	 				and
+	 				acti.acti_endtime <=  DATE_FORMAT(#{workingTime,jdbcType=TIMESTAMP},'%Y-%m-%d')
+	 			)
+	 		)
+		 ]]>
+	</select>
+
+	<resultMap type="Activity" id="ActivityWithMultiConditionSelect">
+		<id column="acti_id" property="acti_id" />
+		<result column="acti_name" property="acti_name" />
+		<result column="acti_poster" property="acti_poster" />
+		<result column="acti_summary" property="acti_summary" />
+		<result column="acti_support" property="acti_support" />
+		<result column="acti_join" property="acti_join" />
+		<result column="acti_type" property="acti_type" />
+		<result column="acti_newtime" property="acti_newtime" />
+		<result column="acti_starttime" property="acti_starttime" />
+		<result column="acti_endtime" property="acti_endtime" />
+		<association property="acti_user" javaType="User">
+			<id column="user_id" property="user_id" />
+			<result column="user_nickname" property="user_nickname" />
+			<result column="user_university" property="user_university" />
+			<result column="user_picture" property="user_picture" />
+			<result column="user_property" property="user_property" />
+		</association>
+	</resultMap>
+	<!-- 多条件查询并分页2：获取分页的记录 -->
+	<select id="queryMultiConditionFindPagingActivity" parameterMap="multiConditionParamsMap"
+		resultMap="ActivityWithMultiConditionSelect">
+		<![CDATA[ 
+			select
+			acti.acti_id,acti.acti_name,acti.acti_user_id,acti.acti_poster,acti.acti_summary,acti.acti_support,acti.acti_join,acti_type,acti.acti_newtime,acti.acti_starttime,acti.acti_endtime,
+			user.user_id,user.user_nickname,user.user_university,user.user_picture,user.user_property
+			from user,activity acti
+			where
+			acti.acti_user_id = user.user_id
+			and
+			user.user_university like concat('%',concat(#{userUniversity},'%'))
+			and
+			acti.acti_type like concat('%',concat(#{activityType},'%'))
+	 		and 
+	 		(
+	 			(	
+	 				acti.acti_starttime <= DATE_FORMAT(#{workingTime,jdbcType=TIMESTAMP},'%Y-%m-%d')
+	 				and
+	 				acti.acti_endtime >=  DATE_FORMAT(#{workingTime,jdbcType=TIMESTAMP},'%Y-%m-%d')
+	 			)
+	 			or
+	 			(
+	 				acti.acti_endtime >= DATE_FORMAT(#{currentTime,jdbcType=TIMESTAMP},'%Y-%m-%d')
+	 				and
+	 				acti.acti_endtime <=  DATE_FORMAT(#{workingTime,jdbcType=TIMESTAMP},'%Y-%m-%d')
+	 			)
+	 		)
+	 		limit ${currentPageOffset},${pageSize}
+		 ]]>
+	</select>
+	<!-- *************************多条件查询结束*********************** -->
+
+
+
+	<select id="getLastTen" resultMap="ActivityWithUserNameAndId">
+		select
+		acti_id,acti_name,acti_user_id,acti_poster,acti_summary,acti_support,acti_join
+		from
+		activity
+		order by acti_id desc
+		limit 10
+	</select>
+	<select id="testGetHotActivity" resultMap="ActivityWithUserNameAndId"
+		parameterType="byte">
+		select
+		acti_id,acti_name,acti_user_id,acti_poster,acti_summary,acti_support,acti_join
+		from activity order by acti_support desc limit #{hotRows}
+	</select>
+
+
+	<insert id="addActivity" parameterType="Activity"
+		useGeneratedKeys="true" keyProperty="acti_id">
+		insert into
+		activity(acti_name,acti_summary,acti_newtime,
+		acti_content,acti_user_id,acti_fath_id,acti_starttime,acti_endtime,
+		acti_address,acti_type,acti_support,acti_join)
+		values(#{acti_name},#{acti_summary},#{acti_newtime},
+		#{acti_content},#{acti_user.user_id},#{acti_fath.acti_id},#{acti_starttime},#{acti_endtime},
+		#{acti_address},#{acti_type},0,0)
+	</insert>
+
+	<update id="updateActivity" parameterType="Activity">
+		update
+		activity
+		set
+		acti_name=#{acti_name},acti_summary=#{acti_summary},acti_newtime=#{acti_newtime},
+		acti_content=#{acti_content},acti_fath_id=#{acti_fath.acti_id},acti_starttime=#{acti_starttime},acti_endtime=#{acti_endtime},
+		acti_address=#{acti_address},acti_type=#{acti_type}
+		where
+		acti_id=#{acti_id}
+	</update>
+	<parameterMap type="java.util.Map" id="paramsMap">
+		<parameter property="activity_id" mode="IN" javaType="long" />
+		<parameter property="updateValue" mode="IN" javaType="int" />
+	</parameterMap>
+	<update id="updateActivitySupport" parameterMap="paramsMap">
+		update activity
+		set
+		acti_support = acti_support+#{updateValue}
+		where
+		acti_id =
+		#{activity_id}
+	</update>
+	<update id="updateActivityJoin" parameterMap="paramsMap">
+		update
+		activity
+		set
+		acti_join = acti_join+#{updateValue}
+		where
+		acti_id =
+		#{activity_id}
+	</update>
+
+
+	<delete id="deleteActivity" parameterType="long">
+		delete from activity
+		where acti_id = #{acti_id}
+	</delete>
+
+
+	<resultMap type="Activity" id="ActivityForFindById">
+		<association property="acti_user" column="acti_user_id"
+			select="SelectUserIdAndNameById">
+		</association>
+		<association property="acti_fath" column="acti_fath_id"
+			select="selectFathActiIdAndNameByActiId">
+		</association>
+	</resultMap>
+	<select id="SelectUserIdAndNameById" resultType="User">
+		select
+		user_id,user_nickname,user_picture from user
+		where
+		user_id =
+		#{acti_user_id}
+	</select>
+	<select id="selectFathActiIdAndNameByActiId" resultType="Activity">
+		select
+		acti_id,acti_name from activity where acti_id=#{acti_fath_id}
+	</select>
+	<select id="findById" parameterType="long" resultMap="ActivityForFindById">
+		select
+		acti_id,acti_name,acti_summary,acti_newtime,acti_support,acti_join,
+		acti_content,acti_user_id,acti_fath_id,acti_starttime,acti_endtime,
+		acti_address,acti_poster,acti_otherpic1,acti_otherpic2,
+		acti_otherpic3,acti_twocode,acti_type
+		from activity 
+		where
+		acti_id=#{acti_id}
+	</select>
+
+	<!-- <resultMap type="Activity" id="ActivityForTCode"> </resultMap> <select 
+		id="findByTCodeAndUserId" parameterMap="actiMap" resultMap="ActivityForTCode"> 
+		select acti_id,acti_name,acti_user,acti_summary,acti_starttime,acti_endtime 
+		</select> -->
+	<select id="findByName" parameterType="String"
+		resultMap="ActivityWithUserNameAndId">
+		select
+		acti.acti_id,acti.acti_name,acti.acti_user_id,acti.acti_poster,acti.acti_summary,acti.acti_support,acti.acti_join,acti_type,acti.acti_newtime,acti.acti_starttime,acti.acti_endtime
+		from activity acti
+		where
+		acti.acti_name like concat('%',concat(#{acti_name},'%'))
+	</select>
+	<select id="findByType" parameterType="String"
+		resultMap="ActivityWithUserNameAndId">
+		select
+		acti.acti_id,acti.acti_name,acti.acti_user_id,acti.acti_poster,acti.acti_summary,acti.acti_support,acti.acti_join,acti_type,acti.acti_newtime,acti.acti_starttime,acti.acti_endtime
+		from activity acti
+		where
+		acti.acti_type=#{acti_type}
+	</select>
+	<select id="findByAddr" parameterType="String"
+		resultMap="ActivityWithUserNameAndId">
+		select
+		acti.acti_id,acti.acti_name,acti.acti_user_id,acti.acti_poster,acti.acti_summary,acti.acti_support,acti.acti_join,acti_type,acti.acti_newtime,acti.acti_starttime,acti.acti_endtime
+		from activity acti
+		where
+		acti.acti_address like concat('%',concat(#{acti_address},'%'))
+	</select>
+	<select id="findByStartEndTime" resultMap="ActivityWithUserNameAndId">
+		 <![CDATA[
+			 select 
+			 acti.acti_id,acti.acti_name,acti.acti_user_id,acti.acti_poster,acti.acti_summary,acti.acti_support,acti.acti_join,acti_type,acti.acti_newtime,acti.acti_starttime,acti.acti_endtime
+			 from activity  acti
+			 where 
+			 acti.acti_starttime > DATE_FORMAT(#{acti_starttime,jdbcType=TIMESTAMP},'%Y-%m-%d') 
+			 and 
+			 acti.acti_endtime < DATE_FORMAT(#{acti_endtime,jdbcType=TIMESTAMP},'%Y-%m-%d')
+		 ]]>
+	</select>
+	<select id="findByNewTime" resultMap="ActivityWithUserNameAndId">
+	 	<![CDATA[
+			 select 
+			 acti.acti_id,acti.acti_name,acti.acti_user_id,acti.acti_poster,acti.acti_summary,acti.acti_support,acti.acti_join,acti_type,acti.acti_newtime,acti.acti_starttime,acti.acti_endtime
+			 from activity  acti
+			 where 
+			 acti.acti_newtime > DATE_FORMAT(#{acti_newtime,jdbcType=TIMESTAMP},'%Y-%m-%d') 
+		 ]]>
+	</select>
+
+	<select id="findByTeamId" resultMap="ActivityWithUserNameAndId"
+		parameterType="long">
+		select
+		acti.acti_id,acti.acti_name,acti.acti_user_id,acti.acti_poster,acti.acti_summary,acti.acti_support,acti.acti_join,acti_type,acti.acti_newtime,acti.acti_starttime,acti.acti_endtime
+		from
+		activity acti
+		where
+		acti.acti_user_id = #{team_id}
+	</select>
+
+	<select id="finbByStuId" resultMap="ActivityWithUserNameAndId"
+		parameterType="long">
+		select
+		acti.acti_id,acti.acti_name,acti.acti_user_id,acti.acti_poster,acti.acti_summary,acti.acti_support,acti.acti_join,acti_type,acti.acti_newtime,acti.acti_starttime,acti.acti_endtime
+		from
+		activity acti
+		where
+		acti.acti_user_id = #{stu_id}
+	</select>
+	<select id="findByTwoCodeForArrive" resultMap="ActivityWithUserNameAndId">
+		select
+		acti.acti_id,acti.acti_name,acti.acti_user_id,acti.acti_poster,acti.acti_summary,acti.acti_support,acti.acti_join,acti_type,acti.acti_newtime,acti.acti_starttime,acti.acti_endtime
+		from activity acti
+		where
+		acti.acti_twocode = #{activity_twocode}
+	</select>
+	
+	<!-- 用户获取自己已经发布的活动 -->
+	<select id="findByUserId" resultType="Activity">
+		acti.acti_id,acti.acti_name,acti.acti_user_id,acti.acti_poster,acti.acti_summary,acti.acti_support,acti.acti_join,acti_type,acti.acti_newtime,acti.acti_starttime,acti.acti_endtime
+		from activity acti
+		where
+		acti.acti_user_id = #{userId}
+	</select>
+</mapper>

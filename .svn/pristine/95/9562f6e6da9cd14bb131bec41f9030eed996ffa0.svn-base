@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<link rel="stylesheet" type="text/css"
+	href="css/imgareaselect-default.css" />
+<script type="text/javascript" src="scripts/jquery.min.js"></script>
+<script src="layer/layer.min.js"></script>
+<script type="text/javascript"
+	src="scripts/jquery.imgareaselect.pack.js"></script>
+<script type="text/javascript" src="scripts/ajaxfileupload.js"></script>
+<script type="text/javascript">
+	var uploadImageParameters = {};
+
+	$(document).ready(
+			function() {
+				$("#poster").change(function() {
+					var objUrl = getObjectURL(this.files[0]);
+					$("#userImage").attr("src", objUrl);
+
+					$('#userImage').imgAreaSelect({
+						aspectRatio : '2:3',
+						handles : true,
+						fadeSpeed : 200,
+						onSelectChange : preview
+					// autoHide:true
+					});
+				})
+
+				//自设关闭
+				$('#tailoring').on(
+						'click',
+						function() {
+
+							$.ajaxFileUpload({
+								contentType : "text/html;charset=UTF-8",
+								url : "../file/uploadPic.do?x="
+										+ uploadImageParameters.x1 + "&y="
+										+ uploadImageParameters.y1 + "&width="
+										+ uploadImageParameters.width
+										+ "&height="
+										+ uploadImageParameters.height+"&realWidth=500",
+								// 需要链接到服务器地址
+								secureuri : false,
+								type : 'POST',
+								fileElementId : "poster", // 文件选择框的id属性
+								dataType : 'text', //服务器返回的格式,可以是json或xml等
+								success : function(data, status) { //服务器响应成功时的处理函数
+									data = data.replace("<PRE>", ''); //ajaxFileUpload会对服务器响应回来的text内容加上<pre>text</pre>前后缀
+									data = data.replace("</PRE>", '');
+									data = data.replace("<pre>", '');
+									data = data.replace("</pre>", ''); //本例中设定上传文件完毕后,服务端会返回给前台[0`filepath]
+									alert("ok");
+									//将String字符串转换成json
+									var dataset = $.parseJSON(data);
+									console.log(dataset);
+								},
+								error : function(data, status, e) { //服务器响应失败时的处理函数
+									console.log(e);
+									console.log(data);
+									$('#result').html('APK上传失败，请重试！！');
+								}
+							});
+
+							// $.ajax({
+							// 	url: 'data.json',
+							// 	type: 'GET',
+							// 	dataType: 'json',
+							// })
+							// .done(function(data) {
+							// 	layer.closeAll();
+							// 	alert(data);
+							// })
+							// .fail(function() {
+							// 	console.log("error");
+							// })
+							// .always(function() {
+							// 	console.log("complete");
+							// });
+
+						});
+
+			});
+
+	function uploadImage() {
+		var pageii = $.layer({
+			type : 1,
+			title : [ '裁剪图片', 'background:#4A8CF7;color:white' ],
+			area : [ 'auto', 'auto' ],
+			border : [ 0 ],
+			shade : [ 0 ], //去掉遮罩
+			shadeClose : true,
+			shift : 'left', //从左动画弹出
+			page : {
+				dom : '#uploadImage'
+			}
+		});
+	}
+
+	function preview(img, selection) {
+		if (!selection.width || !selection.height)
+			return;
+		uploadImageParameters.x1 = selection.x1;
+		uploadImageParameters.y1 = selection.y1;
+		uploadImageParameters.width = selection.width;
+		uploadImageParameters.height = selection.height;
+		console.log(uploadImageParameters);
+	}
+
+	function getObjectURL(file) {
+		var url = null;
+		if (window.createObjectURL != undefined) { // basic
+			url = window.createObjectURL(file);
+		} else if (window.URL != undefined) { // mozilla(firefox)
+			url = window.URL.createObjectURL(file);
+		} else if (window.webkitURL != undefined) { // webkit or chrome
+			url = window.webkitURL.createObjectURL(file);
+		}
+		return url;
+	}
+</script>
+<style type="text/css">
+#uploadImage {
+	width: 420px;
+	height: 420px;
+	padding: 20px;
+	border: 1px solid #ccc;
+	background-color: #eee;
+	display: none;
+}
+
+#uploadImage img {
+	max-width: 400px;
+	max-height: 400px;
+	/* width:expression(this.offsetWidth > 400 ? "400px" : "auto");*/
+	display: inline !important;
+}
+</style>
+</head>
+<body>
+
+	<div id="uploadImage">
+		<img src="" id="userImage"> <input type="file" name="poster"
+			id="poster" />
+		<button id="tailoring">裁剪</button>
+	</div>
+	<img src="" width="100px" height="150px;" id="serverPoster">
+	<button onclick="uploadImage()">上传图片</button>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gd.dao.DiscussDao">
+
+	<insert id="addDiscuss"  parameterMap="DiscussMap">
+		insert into discuss (disc_acti_id,disc_user_send_id,disc_user_rece_id,disc_user_area_id,disc_rped_disc_id,disc_content,disc_time,disc_rece_read)
+		values(?,?,?,?,?,?,?,?)
+	</insert>
+	
+		<parameterMap type="java.util.Map" id="DiscussMap">
+			<parameter property="disc_acti_id" mode="IN" javaType="long"  />
+			<parameter property="disc_user_send_id" mode="IN" javaType="long"/>
+			<parameter property="disc_user_rece_id" mode="IN" javaType="long" />
+			<parameter property="disc_user_area_id" mode="IN" javaType="long" />
+			<parameter property="disc_rped_disc_id" mode="IN" javaType="long" />
+			<parameter property="disc_content" mode="IN" javaType="String" />
+			<parameter property="disc_time" mode="IN" javaType="Date" />
+			<parameter property="disc_rece_read" mode="IN" javaType="boolean" />
+		</parameterMap> 
+	
+	<select id="listDiscussByUserReceId"  parameterMap="pageMap" resultMap="DiscussWithoutRece">
+		select * from discuss d,activity a,user u
+		where d.disc_acti_id = a.acti_id and d.disc_user_send_id = u.user_id and 
+		disc_user_rece_id = #{id} order by d.disc_time DESC
+		limit #{first},#{pageSize}
+	</select>
+	
+	<resultMap type="Discuss" id="DiscussWithoutRece">
+		<id column="disc_id" property="disc_id"/>
+		<result column="disc_content" property="disc_content"/>
+		<result column="disc_time" property="disc_time"/>
+		<result column="disc_rece_read" property="disc_rece_read"/>
+		<association property="disc_acti"  javaType="Activity">
+			<id column="acti_id" property="acti_id"/>
+			<id column="acti_name" property="acti_name"/>
+		</association>
+		<association property="disc_user_send" javaType="User">
+			<id column="user_id" property="user_id"/>
+			<result column="user_nickname" property="user_nickname"/>
+			<result column="user_picture" property="user_picture"/>
+		</association>
+		<association property="disc_rped_disc" javaType="Discuss" column="disc_rped_disc_id" select="listDiscussOnlyWithSend">
+		</association>
+	</resultMap>
+	
+	<select id="listDiscussOnlyWithSend" parameterType="long" resultMap="discussOnlyWithSend">
+	 select* from discuss
+	 where  disc_id = #{disc_rped_disc_id}
+	</select>
+	
+	<resultMap type="Discuss" id="discussOnlyWithSend">
+		<id column="disc_id" property="disc_id"/>
+		<result column="disc_content" property="disc_content"/>
+		<result column="disc_time" property="disc_time"/>
+		<result column="disc_rece_read" property="disc_rece_read"/>
+	</resultMap>
+	
+	<select id="listDiscussByUserSendId"  parameterMap="pageMap" resultMap="DiscussWithoutSend">
+		select * from discuss d,activity a,user u
+		where d.disc_acti_id = a.acti_id and d.disc_user_rece_id = u.user_id and 
+		disc_user_send_id = #{id} order by d.disc_time DESC
+		limit #{first},#{pageSize}
+	</select> 
+	
+	<resultMap type="Discuss" id="DiscussWithoutSend">
+		<id column="disc_id" property="disc_id"/>
+		<result column="disc_content" property="disc_content"/>
+		<result column="disc_time" property="disc_time"/>
+		<result column="disc_rece_read" property="disc_rece_read"/>
+		<association property="disc_acti"  javaType="Activity">
+			<id column="acti_id" property="acti_id"/>
+			<result column="acti_name" property="acti_name"/>
+		</association>
+		<association property="disc_user_rece" javaType="User">
+			<id column="user_id" property="user_id"/>
+			<result column="user_nickname" property="user_nickname"/>
+			<result column="user_picture" property="user_picture"/>
+		</association>
+		<association property="disc_rped_disc" javaType="Discuss" column="disc_rped_disc_id" select="listDiscussOnlyWithRece">
+		</association>
+	</resultMap>
+	
+	<select id="listDiscussOnlyWithRece" parameterType="long" resultMap="discussOnlyWithRece">
+	 select* from discuss
+	 where  disc_id = #{disc_rped_disc_id}
+	</select>
+	
+	<resultMap type="Discuss" id="discussOnlyWithRece">
+		<id column="disc_id" property="disc_id"/>
+		<result column="disc_content" property="disc_content"/>
+		<result column="disc_time" property="disc_time"/>
+		<result column="disc_rece_read" property="disc_rece_read"/>
+	</resultMap>
+	
+	
+	<select id="listDiscussByActiID"  parameterMap="pageMap" resultMap="listDiscussByActiIDMap">
+			select d1.disc_id, d1.disc_content,d1.disc_time,d1.disc_rece_read,
+			u1.user_id u1_user_id,u1.user_nickname u1_user_nickname,u1.user_picture u1_user_picture,
+			u2.user_id u2_user_id,u2.user_nickname u2_user_nickname,u2.user_picture u2_user_picture
+			from discuss d1,user u1,user u2
+			where d1.disc_acti_id = #{id} and d1.disc_user_send_id = u1.user_id and d1.disc_user_rece_id = u2.user_id and d1.disc_user_area_id=1
+			ORDER BY d1.disc_time DESC 
+			limit #{first},#{pageSize}
+	</select> 
+	
+	<parameterMap type="java.util.Map" id="pageMap">
+		<parameter property="id" mode="IN" javaType="long"/>
+		<parameter property="first" mode="IN" javaType="int"/>
+		<parameter property="pageSize" mode="IN" javaType="int"/>
+	</parameterMap>
+	
+	<resultMap type="Discuss" id="listDiscussByActiIDMap">
+		
+		 <id column="disc_id" property="disc_id"/>
+		<result column="disc_content" property="disc_content"/>
+		<result column="disc_time" property="disc_time"/>
+		<result column="disc_rece_read" property="disc_rece_read"/>
+		<association property="disc_user_rece" javaType="User">
+			<id column="u2_user_id" property="user_id"/>
+			<result column="u2_user_nickname" property="user_nickname"/>
+			<result column="u2_user_picture" property="user_picture"/>
+		</association>
+		<association property="disc_user_send" javaType="User">
+			<id column="u1_user_id" property="user_id"/>
+			<result column="u1_user_nickname" property="user_nickname"/>
+			<result column="u1_user_picture" property="user_picture"/>
+		</association>
+	<collection property="disc_area_disc" ofType="Discuss" select="listDiscussByAreaId" column="disc_id">
+		
+	</collection>
+	</resultMap>
+	
+	<select id="listDiscussByAreaId"  parameterType="long" resultMap="listDiscussByAreaIdMap">
+			select d1.disc_id, d1.disc_content,d1.disc_time,d1.disc_rece_read,
+			u1.user_id u1_user_id,u1.user_nickname u1_user_nickname,u1.user_picture u1_user_picture,
+			u2.user_id u2_user_id,u2.user_nickname u2_user_nickname,u2.user_picture u2_user_picture
+			from discuss d1,user u1,user u2
+			where d1.disc_user_area_id = #{disc_id} and d1.disc_user_send_id = u1.user_id and d1.disc_user_rece_id = u2.user_id
+			ORDER BY d1.disc_time ASC
+	</select> 
+	
+	<resultMap type="Discuss" id="listDiscussByAreaIdMap">
+		<id column="disc_id" property="disc_id"/>
+		<result column="disc_content" property="disc_content"/>
+		<result column="disc_time" property="disc_time"/>
+		<result column="disc_rece_read" property="disc_rece_read"/>
+		<association property="disc_user_rece" javaType="User">
+			<id column="u2_user_id" property="user_id"/>
+			<result column="u2_user_nickname" property="user_nickname"/>
+			<result column="u2_user_picture" property="user_picture"/>
+		</association>
+		<association property="disc_user_send" javaType="User">
+			<id column="u1_user_id" property="user_id"/>
+			<result column="u1_user_nickname" property="user_nickname"/>
+			<result column="u1_user_picture" property="user_picture"/>
+		</association>
+	</resultMap>
+	
+	<select parameterType="long" resultType="int" id="discussByReceIdCount">
+		select count(disc_id) from discuss where disc_user_rece_id = #{disc_user_rece_id}
+	</select>
+	<select parameterType="long" resultType="int" id="discussByActiIdCount">
+		select count(disc_id) from discuss where disc_acti_id = #{disc_acti_id}
+	</select>
+	<select parameterType="long" resultType="int" id="discussBySendIdCount">
+		select count(disc_id) from discuss where disc_user_send_id = #{disc_user_send_id}
+	</select>
+</mapper>

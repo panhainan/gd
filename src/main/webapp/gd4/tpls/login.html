@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>果动</title>
+	<meta charset="utf-8">
+	<link rel="shortcut icon" href="../images/favicon.jpg">
+	<script type="text/javascript" src="../framework/jquery-1.9.1/jquery.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/login.css">
+	
+</head>
+<body class="body1">
+<div >
+	<div class="login-box-w">
+    	<!-- 登录框logo -->
+		<div class="logo-w"><a href="#"><img src="../images/logo-bg1.png"></a></div>
+		<!-- 登录框输入信息 -->
+		<div class="login-inf-w" >
+			<form>
+				<input class="account-w" type="text" value="用户名/邮箱" onfocus="if(this.value==defaultValue||'请重新输入您的账号') {this.value='';this.style.color='#030303'}" onblur="if(!value) {value=defaultValue}" style="color:#797C89;" />
+
+				<input class="password-w" type="text" value="密码" onfocus="if(this.value==defaultValue) {this.value='';this.type='password';this.style.color='#030303'}" onblur="if(!value) {value=defaultValue; this.type='text';}" style="color:#797C89;" />
+
+				<a class="login-w" href="javascript:void(0)" onclick="login()"><strong>登 录</strong></a>
+
+				<a class="register-w" href="register.html"><strong>注 册</strong></a>
+				<div class="bottom-w">
+					<input class="checkbox-w" type="checkbox" name="checkbox" value="checkbox1">
+					<div class="remember-w">记住密码</div>
+					<div class="find-w"><a  onclick="location='passw-recover.html'" href="#">找回密码</a></div>
+				</div>				
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="../js/login.js"></script>  
+</body>
+</html>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gd.dao.VerifiedTeamDao">
+		<insert id="addVerifiedTeam" parameterType="VerifiedTeam">
+		    insert into verifyteam (vari_email,vari_teamname,vari_password,vari_authuser1,vari_authuser2,
+		    vari_authuser3,vari_authresult1,vari_authresult2,vari_authresult3,vari_date,vari_salt,vari_intruduction)
+		    values(#{vari_email},#{vari_teamName},#{vari_password},#{vari_authUser1},
+		    #{vari_authUser2},#{vari_authUser3},#{vari_authResult1},#{vari_authResult2},
+		    #{vari_authResult3},#{vari_date},#{vari_salt},#{vari_intruduction});
+		</insert>
+		
+		<select id="findTeam" parameterType="String" resultType="VerifiedTeam">
+		 	select * from verifyteam where vari_email = #{email}
+		</select>
+</mapper>

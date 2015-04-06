@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gd.dao.IdeaDao">
+	<resultMap type="Idea" id="IdeaForFindById">
+		<association property="idea_user" column="idea_user_id"
+			select="selectUserIdAndNameByIdeaId">
+		</association>
+	</resultMap>
+	<select id="selectUserIdAndNameByIdeaId" resultType="User">
+		select
+		user_id,user_nickname
+		from user
+		where
+		user_id = #{idea_user_id}
+	</select>
+	<select id="findById" resultMap="IdeaForFindById">
+		select
+		idea_id,idea_user_id,idea_title,
+		idea_content,idea_time,idea_status
+		from idea
+		where
+		idea_id = #{idea_id}
+	</select>
+	<select id="findBySendUserId" resultType="Idea">
+		select
+		idea_id,idea_title,idea_time,idea_status
+		from idea
+		where
+		idea_user_id=#{idea_user_id}
+	</select>
+	<!-- 添加意向书 -->
+	<insert id = "addIdea" parameterMap="IdeaMap" keyProperty="idea_id">
+	    insert into idea (idea_user_id,idea_title,idea_content,idea_time,idea_status) values(?,?,?,?,?)
+	</insert>
+	
+	<parameterMap type="java.util.Map" id="IdeaMap">
+	    <parameter property="idea_user_id" javaType="long" mode="IN"/>
+	    <parameter property="idea_title" javaType="String" mode="IN"/>
+	    <parameter property="idea_content" javaType="String" mode="IN"/>
+	    <parameter property="idea_time" javaType="Date" mode="IN"/>
+	    <parameter property="idea_status" javaType="boolean" mode="IN"/>
+	    </parameterMap>
+	    
+	<!--终止意向书  -->
+	<update id="stopIdea" parameterType="long">
+	  update idea set idea_status = true where idea_id =  #{idea_id}
+	</update>
+	<!--删除意向  -->
+	<delete id="deleteIdea" parameterType="long">
+	    delete idea from idea where  idea_id =  #{idea_id}
+	</delete>
+</mapper>

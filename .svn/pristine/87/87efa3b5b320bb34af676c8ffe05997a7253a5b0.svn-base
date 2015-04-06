@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>果动</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../css/activition.css">
+    <script type="text/javascript" src="framework/handlebars.js"></script>
+    <script type="text/javascript" src="../js/search.js"></script>
+    
+</head>
+<body>
+    <!-- Top1 -->
+    <div class="header clear">
+        <div class="header_in">
+            <div class="logo">
+                <a href="#">
+                    <img src="../images/logo2.png">
+                </a>
+            </div>
+            <div class="header_right">
+                <div class="register">
+                    <ul>
+                        <li><a href="./tpls/register.html">注册</a></li>
+                        <li><a href="">|</a></li>
+                        <li><a href="./tpls/login.html">登录</a></li>               
+                    </ul>
+                </div>
+                <div class="search">
+                    <fieldset >
+                        <input id="Search" name="s" type="text" onfocus="if(this.value=='Search')this.value='';" onblur="if(this.value=='')this.value='Search';"  value="Search">
+                        <button type="submit" onclick="Search()"></button>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+
+        <div class="Icon"></div>
+    </div>
+    <!-- Bottom -->
+    <div class="footer_in">
+        <div class="activi">
+            <img src="../images/activition.png">
+            <div class="text"><h1>恭喜您激活成功！！</h1></div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+        <!-- <p class="copyright">© 2015 <a href="#">
+          GuoDong Templatic Theme      </a>. All Rights Reserved. </p>
+          <p class="credits">Designed by <a href="http://templatic.com">MengZhiZhan</a></p> -->

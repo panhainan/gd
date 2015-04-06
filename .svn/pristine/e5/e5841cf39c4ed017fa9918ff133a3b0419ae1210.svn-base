@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>果动</title>
+	<meta charset="utf-8">
+	<link rel="shortcut icon" href="../images/favicon.jpg">
+<script type="text/javascript" src="../framework/jquery-1.9.1/jquery.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/passw-recover.css">
+	
+</head>
+<body class="body1">
+<div >
+	<div class="login-box-w">
+    	<!-- 登录框logo -->
+		<div class="logo-w"><a href="#"><img src="../images/logo-bg1.png"></a></div>
+		<!-- 登录框输入信息 -->
+		<div class="login-inf-w" >
+			<form>
+				<input class="account-w" type="text" value="注册邮箱" onfocus="if(this.value==defaultValue) {this.value=''}" onblur="if(!value) {value=defaultValue}" style="color:#797C89;" />		
+			</form>
+			<a class="login-w" href="javascript:void(0)" onclick="location='sendmail.html'"><strong>下一步</strong></a>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	function login () {
+	$.ajax({
+			url: 'http://10.28.23.121:8080/gd/user/login.do',
+			type: 'POST',
+			data:{	
+					cardId:1213,
+					password:123
+			},
+			dataType: 'json'
+		})
+		.done(function(data) {
+			console.log("SUCCESSFUL");
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		});	
+}
+</script>
+    
+</body>
+</html>

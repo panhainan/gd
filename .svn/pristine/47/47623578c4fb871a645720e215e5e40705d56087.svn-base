@@ -1,0 +1,92 @@
+.body1{
+	width: 100%;
+	height: 100%;
+	background-color:#6081B8;
+}
+a:link{
+
+	text-decoration: none;	
+}
+a:hover{
+	background-color:#5ABFFF;
+}
+.login-box-w{
+	width: 300px;
+	height: 400px;
+	margin:0px auto;
+	position: relative;
+	top: 120px;
+}
+.logo-w{
+	margin:0px auto;
+	width: 75%;
+	height: 177px;
+}
+.logo-w img{
+	text-align: center;
+}
+.logo-w a:hover{
+	background-color: #6081B8;
+}
+.account-w,.password-w{
+	width: 266px;
+	float: left;
+	margin:5px 10px;
+	padding: 11px 5px;
+	border-radius: 6px;
+}
+.password-w{
+	margin-bottom: 25px;
+}
+.account-w{
+	margin-top: 25px;
+}
+.login-w{
+	color: #fff;
+	margin-left: 12px;
+	padding: 11px 78px;
+	border-radius: 6px;
+	background-color:#45A7E3;
+}
+.register-w{
+	color: #fff;
+	padding: 11px 14px;
+	border-radius: 6px;
+	background-color:#45A7E3;
+}
+.checkbox-w{
+	float: left;
+	margin-top: 2px;
+}
+.remember-w{
+	float: left;
+	font-size: 12px;
+	font-family: 'Microsoft YaHei';
+	color: #fff;
+}
+.find-w{	
+	color: #fff;
+	float: right;
+	font-size: 12px;
+	font-family: 'Microsoft YaHei';
+}
+.find-w a{
+	color: #fff;
+}
+.find-w a:hover{
+	color: #5ABFFF;
+	background-color: #6081B8;
+}
+.bottom-w{
+	margin:17px 16px;
+}
+.login-inf-w input{
+	font-weight: 200px;
+}
+*{
+	margin:0px;
+	padding: 0px;
+}
+img{
+	border:0px;
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+		 <typeAliases>
+		         <typeAlias alias="User" type="com.gd.entity.User"/> 
+		         <typeAlias alias="Discuss" type="com.gd.entity.Discuss"/> 
+		         <typeAlias alias="Activity" type="com.gd.entity.Activity"/> 
+		         <typeAlias alias="Admin" type="com.gd.entity.Admin"/> 
+		         <typeAlias alias="Announce" type="com.gd.entity.Announce"/> 
+		         <typeAlias alias="Au" type="com.gd.entity.Au"/> 
+		         <typeAlias alias="Idea" type="com.gd.entity.Idea"/> 
+		         <typeAlias alias="Letter" type="com.gd.entity.Letter"/> 
+		         <typeAlias alias="Partner" type="com.gd.entity.Partner"/> 
+		         <typeAlias alias="Question" type="com.gd.entity.Question"/> 
+		         <typeAlias alias="Role" type="com.gd.entity.Role"/> 
+		       	<typeAlias alias="Permission" type="com.gd.entity.Permission"/> 
+		       	<typeAlias alias="MySession" type="com.gd.entity.MySession"/>
+		       		<typeAlias alias="VerifiedTeam" type="com.gd.entity.VerifiedTeam"/>  
+		 </typeAliases>
+			<!-- Spring整合myBatis后，这个配置文件基本可以不要了-->
+			<!-- 设置外部配置文件 -->
+			<!-- 设置类别名 -->
+			<!-- 设置数据库连接环境 -->
+			<!-- 映射文件 -->	
+</configuration>

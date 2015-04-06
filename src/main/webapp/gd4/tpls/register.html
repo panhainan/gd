@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>果动</title>
+	<meta charset="utf-8">
+	<link rel="shortcut icon" href="../images/favicon.jpg">
+	<script type="text/javascript" src="../framework/jquery-1.9.1/jquery.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/register.css">
+</head>
+<body class="body-register">
+<div>
+	<!-- 注册总框 -->
+	<div class="register-box-w">
+    	<!-- 注册框logo -->
+		<div class="logo-w"><a href="#"><img src="../images/logo-bg1.png"></a></div>
+		<div class="logo2-w">
+		<img src="../images/logo2-bg2.png">
+		</div>
+
+		<!-- 注册框输入信息 -->
+		<div class="register-inf-w" >
+			<form>
+				<input class="account-w" type="text" value="用户名" onfocus="if(this.value==defaultValue||'输入有误，请检查！') {this.value='';this.style.color='#030303'}" onblur="if(!value) {value=defaultValue}" style="color:#797C89;" />
+
+				<input class="email-w" type="text" value="邮箱" onfocus="if(this.value==defaultValue) {this.value='';this.style.color='#030303'}" onblur="if(!value) {value=defaultValue}" style="color:#797C89;" />
+
+				<input class="password-w" type="text" value="密码" onfocus="if(this.value==defaultValue) {this.value='';this.type='password';this.style.color='#030303'}" onblur="if(!value) {value=defaultValue; this.type='text';}" style="color:#797C89;" />
+
+				<input class="repassword-w" type="text" value="确认密码" onfocus="if(this.value==defaultValue) {this.value='';this.type='password';this.style.color='#030303'}" onblur="if(!value) {value=defaultValue; this.type='text';}" style="color:#797C89;" />
+
+				<!-- <input class="verify-w" type="text" value="验证码" onfocus="if(this.value==defaultValue) {this.value='';this.style.color='#030303'}" onblur="if(!value) {value=defaultValue}" style="color:#797C89;" /> -->
+
+				<a class="register-w" href="javascript:void(0)" onclick="register()"><strong>注 册</strong></a>
+
+				<a class="login-w" href="login.html"><strong>登 录</strong></a>					
+				<div class="bottom-w">
+
+					<input class="checkbox-w" type="checkbox" name="checkbox" value="checkbox1">
+
+					<div class="protocol-w">阅读并同意使用果动网协议</div>
+					<!-- <div class="find-w"><a href="#">找回密码</a></div> -->
+				</div>			
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="../js/register.js" ></script>   
+</body>
+</html>
+
+
+<!-- 
+<input class="account-w"value="用户名/邮箱" onfocus="if(value=='用户名/邮箱') value='';" onblur="if (value=='') value='用户名/邮箱';" type="text"> -->

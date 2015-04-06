@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gd.dao.PartnerDao">
+
+	<insert id="addPartner"  parameterMap="PartnerMap" keyColumn="part_id">
+		insert into partner (part_idea_id,part_user_id,part_user_success)
+		values(?,?,?)
+	</insert>
+	
+		<parameterMap type="java.util.Map" id="PartnerMap">
+			<parameter property="part_idea_id" mode="IN" javaType="long"  />
+			<parameter property="part_user_id" mode="IN" javaType="long"/>
+			<parameter property="part_user_success" mode="IN" javaType="boolean" />
+		</parameterMap> 
+
+	<select id="findPartnerByUserId" parameterType="long" resultType="Partner">
+		select * from partner where part_user_id = #{part_user_id}
+	</select>
+
+	<select id="findPartnerByIdeaId" parameterType="long" resultMap="PartnerWithUser">
+			select * from partner p,user u where p.part_user_id = u.user_id and p.part_idea_id = #{part_idea_id}
+	</select>
+	
+	<resultMap id = "PartnerWithUser" type="Partner">
+		<id column="part_id" property="part_id" javaType="long"/>
+		<result column="part_user_success" property="part_user_success" javaType="boolean"/>
+		<association property="part_user" javaType="User">
+				<id column="user_id" property="user_id" javaType="long"/>
+				<result column="user_nickname" property="user_nickname" javaType="String"/>
+				<result column="user_picture" property="user_picture" javaType="String"/>
+		</association>
+	</resultMap>
+	
+	<update id="choosePartner" parameterType="long">
+		update partner  
+		set part_user_success = true where part_id = #{part_id}
+	</update>
+    <delete id="deletePartnerByIdeaId" parameterType="long">
+        delete from partner where part_idea_id = #{idea_id}
+    </delete>
+</mapper>

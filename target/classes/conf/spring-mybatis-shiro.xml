@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.2.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+    http://www.springframework.org/schema/util 
+    http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<!-- 扫描文件（自动将servicec层注入） -->
+	<context:component-scan base-package="com.gd.service" />
+	<!-- 引入jdbc配置文件 -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath*:conf/jdbc.properties</value>
+			</list>
+		</property>
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+	</bean>
+	<!-- 引入mail配置文件 -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath*:conf/mail.properties</value>
+			</list>
+		</property>
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+	</bean>
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${jdbc_driverClassName}" />
+		<property name="url" value="${jdbc_url}" />
+		<property name="username" value="${jdbc_username}" />
+		<property name="password" value="${jdbc_password}" />
+		<!-- 初始化连接大小 -->
+		<property name="initialSize" value="${initialSize}" />
+		<!-- 连接池最大数量 -->
+		<property name="maxActive" value="${maxActive}" />
+		<!-- 连接池最大空闲 -->
+		<property name="maxIdle" value="${maxIdle}" />
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="${minIdle}" />
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait" value="${maxWait}" />
+		<!-- 自动清除无用连接 -->
+		<property name="removeAbandoned" value="${removeAbandoned}" />
+		<!-- 清除无用连接的等待时间 -->
+		<property name="removeAbandonedTimeout" value="${removeAbandonedTimeout}" />
+		<!-- 连接属性 -->
+		<property name="connectionProperties" value="${connectionProperties}" />
+	</bean>
+
+	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描mapping.xml文件 -->
+		<property name="configLocation" value="classpath:conf/mybatis-config.xml"></property>
+		<property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+	</bean>
+
+	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.gd.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+
+	<!-- 开启事务注解驱动 -->
+	<tx:annotation-driven />
+	<!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 拦截器方式配置事物 -->
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" /> <!-- 增加 * -->
+			<tx:method name="insert*" propagation="REQUIRED"
+				rollback-for="java.lang.Exception" /> <!-- 插入 * -->
+			<tx:method name="append*" propagation="REQUIRED"
+				rollback-for="java.lang.Exception" /> <!-- 追加 * -->
+			<tx:method name="save*" propagation="REQUIRED"
+				rollback-for="java.lang.Exception" /> <!-- 保存 * -->
+			<tx:method name="delete*" propagation="REQUIRED"
+				rollback-for="java.lang.Exception" /> <!-- 删除 * -->
+			<tx:method name="drop*" propagation="REQUIRED"
+				rollback-for="java.lang.Exception" /> <!-- 删除 * -->
+			<tx:method name="remove*" propagation="REQUIRED"
+				rollback-for="java.lang.Exception" /> <!-- 移除 * -->
+			<tx:method name="update*" propagation="REQUIRED"
+				rollback-for="java.lang.Exception" /> <!-- 更新 * -->
+			<tx:method name="modify*" propagation="REQUIRED"
+				rollback-for="java.lang.Exception" /> <!-- 更改 * -->
+			<tx:method name="edit*" propagation="REQUIRED"
+				rollback-for="java.lang.Exception" /> <!-- 编辑 * -->
+			<tx:method name="repair*" propagation="REQUIRED"
+				rollback-for="java.lang.Exception" /> <!-- 恢复 * -->
+			<tx:method name="delAndRepair*" propagation="REQUIRED"
+				rollback-for="java.lang.Exception" /> <!-- 删除和恢复 * -->
+			<tx:method name="load*" propagation="SUPPORTS" read-only="true" /> <!-- 加载 * -->
+			<tx:method name="select*" propagation="SUPPORTS" read-only="true" /> <!-- 选择 * -->
+			<tx:method name="get*" propagation="SUPPORTS" read-only="true" /> <!-- 获取 * -->
+			<tx:method name="seek*" propagation="SUPPORTS" read-only="true" /> <!-- 查找 * -->
+			<tx:method name="find*" propagation="SUPPORTS" read-only="true" /> <!-- 查找 * -->
+			<tx:method name="search*" propagation="SUPPORTS" read-only="true" /> <!-- 搜索 * -->
+			<tx:method name="list*" propagation="SUPPORTS" read-only="true" /> <!-- 列举* -->
+			<tx:method name="datagrid*" propagation="SUPPORTS"
+				read-only="true" /> <!-- 数据网格 * -->
+			<tx:method name="*" propagation="SUPPORTS" /> <!-- * -->
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut id="serviceMethodsTransactionPointcut"
+			expression="execution(* com.gd.service.*.*(..))" />
+		<aop:advisor advice-ref="transactionAdvice"
+			pointcut-ref="serviceMethodsTransactionPointcut" />
+	</aop:config>
+
+
+
+	<bean id="freeMarker"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="classpath:mailTemplate" />
+		<!--指定模板文件目录 -->
+		<property name="freemarkerSettings"><!-- 设置FreeMarker环境属性 -->
+			<props>
+				<prop key="template_update_delay">1800</prop><!--刷新模板的周期，单位为秒 -->
+				<prop key="default_encoding">UTF-8</prop><!--模板的编码格式 -->
+				<prop key="locale">zh_CN</prop><!-- 本地化设置 -->
+			</props>
+		</property>
+	</bean>
+
+	<!-- 注意:这里的参数(如用户名、密码)都是针对邮件发送者的 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host">
+			<value>${mail_host}</value>
+		</property>
+		<property name="port">
+			<value>${mail_port}</value>
+		</property>
+		<property name="username">
+			<value>${mail_username}</value>
+		</property>
+		<property name="password">
+			<value>${mail_password}</value>
+		</property>
+		<property name="defaultEncoding">
+			<value>${mail_defaultEncoding}</value>
+		</property>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">${mail_auth}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- org.apache.shiro.authc.credential.HashedCredentialsMatcher -->
+	<!--shiro 配置 -->
+	<bean id="credentialsMatcher" class="com.gd.shiro.MyCredentialsMatcher">
+		<!-- <constructor-arg ref="CacheManager"/> -->
+		<property name="hashAlgorithmName" value="md5" />
+		<property name="hashIterations" value="2" />
+		<property name="storedCredentialsHexEncoded" value="true" />
+	</bean>
+	<!-- Realm实现 -->
+	<bean id="MyRealm" class="com.gd.shiro.MyRealm">
+		<property name="CredentialsMatcher" ref="credentialsMatcher"></property>
+		<property name="cachingEnabled" value="true"></property>
+		<property name="authenticationCachingEnabled" value="true"></property>
+		<property name="authenticationCacheName" value="authenticationCache"></property>
+		<property name="authorizationCachingEnabled" value="true"></property>
+		<property name="authorizationCacheName" value="authorizationCache"></property>
+	</bean>
+	<!-- Cache管理 -->
+	<bean id="CacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile" value="classpath:conf/ehcache.xml">
+
+		</property>
+	</bean>
+
+	<!-- Session管理 -->
+	<bean id="SessionManager"
+		class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<!-- 属性名是通过set方法来寻找的而不是通过属性来查找的 -->
+		<property name="sessionListeners">
+			<list>
+				<ref bean="SessionListener" />
+			</list>
+		</property>
+		<property name="sessionDAO">
+			<ref bean="SessionDAO" />
+		</property>
+		<property name="globalSessionTimeout" value="1800000"></property><!--1800000 -->
+		<property name="sessionValidationScheduler">
+			<ref bean="SessionValidationScheduler" />
+		</property>
+	</bean>
+	<bean id="SessionValidationScheduler"
+		class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
+		<property name="interval" value="3600000"></property><!-- 3600000 -->
+	</bean>
+	<bean id="SessionListener" class="com.gd.listener.MySessionListener">
+	</bean>
+	<bean id="SessionDAO" class="com.gd.dao.MySessionDao">
+		<!-- cache存在时间 -->
+		<property name="activeSessionsCacheName" value="shiro-activeSessionCache"></property>
+	</bean>
+	<!-- 安全管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realms">
+			<list>
+				<ref bean="MyRealm" />
+			</list>
+		</property>
+		<property name="sessionManager">
+			<ref bean="SessionManager" />
+		</property>
+		<property name="cacheManager">
+			<ref bean="CacheManager" />
+		</property>
+		<!-- <property name="realm" ref="MyRealm"></property> -->
+	</bean>
+	<!--cookie 管理 -->
+	<bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+		<constructor-arg value="rememberMe" />
+		<!-- 防止跨站脚本攻击,获取cookie -->
+		<property name="httpOnly" value="true" />
+		<property name="maxAge" value="2592000" /><!-- 30天 2592000 -->
+	</bean>
+
+	<!-- rememberMe管理器 -->
+	<bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+		<property name="cipherKey"
+			value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}" />
+		<property name="cookie" ref="rememberMeCookie" />
+	</bean>
+	<!-- Shiro的Web过滤器 -->
+
+
+	<!-- 一切url都会通过这个过滤器进行验证 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="filterChainDefinitions">
+			<value>
+				/index.jsp = anon
+				/test/* =anon
+				/unauthorized.jsp = anon
+				/loginsuccess.jsp = authc
+				/logout = logout
+				/** = anon
+				/user.jsp=roles[user]
+			</value>
+		</property>
+	</bean>
+
+
+
+</beans>
+
+

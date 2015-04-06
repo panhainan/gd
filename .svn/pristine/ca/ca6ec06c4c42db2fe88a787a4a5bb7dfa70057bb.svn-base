@@ -1,0 +1,86 @@
+package com.gd.hrz.test;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.gd.service.IdeaService;
+import com.gd.service.PartnerService;
+
+/**
+ * Unit test for simple App.
+ */
+public class MyTest 
+    extends TestCase
+{
+    /**
+     * Create the test case
+     *
+     * @param testName name of the test case
+     */
+    public MyTest ( String testName )
+    {
+        super( testName );
+    }
+
+    /**
+     * @return the suite of tests being tested
+     */
+    public static Test suite()
+    {
+        return new TestSuite( MyTest .class );
+    }
+
+    /**
+     * Rigourous Test :-)
+     */
+	public void testMethod()
+    {
+		/*
+		ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"classpath:conf/spring-mybatis-shiro.xml"});
+      DiscussService discussService = (DiscussService) context.getBean("discussServiceImpl");*/
+		//QuestionService  questionService = (QuestionService) context.getBean("questionServiceImpl");
+       /*Date date = new Date();
+        int result = discussService.addDiscuss(1, 1, 1, 1, "你好么", date);*/
+       //int result = questionService.addQuestion(1, 2, 1, "我的问题");
+       /* List<Discuss> result = discussService.listDiscussByUserSendId(1, 1, 10);
+        System.out.println(result);
+        for(int i = 0; i<result.size();i++){
+    		System.out.println(result.get(i).getDisc_user_rece());
+    		System.out.println(result.get(i).getDisc_rped_disc());
+        }*/
+    	/*for(int i = 0; i<result.size();i++){
+    		System.out.println(result.get(i).getDisc_user_rece());
+    		System.out.println(result.get(i).getDisc_user_send());
+    		System.out.println(result.get(i).getDisc_area_disc().size());
+    		for(int j = 0;j<result.get(i).getDisc_area_disc().size();j++)
+    		{
+    		System.out.println(result.get(i).getDisc_area_disc().get(0).getDisc_user_rece());
+    		System.out.println(result.get(i).getDisc_area_disc().get(0).getDisc_user_send());
+    		}*/
+		/*ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"classpath:conf/spring-mybatis-shiro.xml"});
+		QuestionService questionService = (QuestionService) context.getBean("questionServiceImpl");
+		List<Question>result = questionService.listQuestionByIdeaId(1, 1,10);
+		System.out.println(result);
+		for(Question question:result){
+			System.out.println(question.getQues_user_rece());
+			System.out.println(question.getQues_user_send());
+			System.out.println("=============================");
+			for(Question inQuestion:question.getQues_area_ques()){
+				System.out.println(inQuestion.getQues_user_rece());
+				System.out.println(inQuestion.getQues_user_send());
+				System.out.println(inQuestion.getQues_content());
+			}
+		}*/
+		ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"classpath:conf/spring-mybatis-shiro.xml"});
+		IdeaService ideaService = (IdeaService) context.getBean("ideaServiceImpl");
+		int result = ideaService.deleteIdea(1);
+		System.out.println(result);
+		
+    }
+        
+    }
+	

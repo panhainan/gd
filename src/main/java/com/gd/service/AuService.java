@@ -1,0 +1,195 @@
+/**
+ * 
+ */
+package com.gd.service;
+
+import java.util.List;
+
+import com.gd.entity.Activity;
+import com.gd.entity.Au;
+
+/**
+ * @author phn
+ * @date 2014-12-10
+ * @TODO
+ */
+public interface AuService {
+	/**
+	 * @author phn
+	 * @date 2014-12-10
+	 * @TODO 通过活动id搜索活动的评价以及评论等信息
+	 * @param acit_id
+	 * @return List<Au>
+	 */
+	public List<Au> findCommentedByActiId(long acti_id);
+
+	/**
+	 * @author phn
+	 * @date 2014-12-9
+	 * @TODO 通过活动二维码来搜索活动.
+	 *       Select条件：二维码、用户id;Select结果：成功（活动名称、简介、发起者、进行状态、签到状态）,失败（未参与此活动）
+	 * @param activity_twocode
+	 * @param user_id
+	 * @return Au
+	 */
+	public Au findByTCodeAndUserId(String activity_twocode, long user_id);
+
+	/**
+	 * @author phn
+	 * @date 2015-3-18
+	 * @TODO 用户报名参加活动，auIsExist标记重载，由于数据库不存在
+	 * @param acti_id
+	 * @param user_id
+	 * @return 0表示操作失败，>0表示操作成功，并且返回au_id
+	 */
+	public long joinActivity(long acti_id, long user_id);
+
+	/**
+	 * @author phn
+	 * @date 2015-3-18
+	 * @TODO 用户报名参加活动,auIsExist标记重载，由于数据库已存在
+	 * @param activity_id
+	 * @param user_id
+	 * @param auIsExist
+	 * @return 操作是否成功
+	 */
+	public boolean joinActivity(long activity_id, long user_id,
+			boolean auIsExist);
+
+	/**
+	 * @author phn
+	 * @date 2015-3-18
+	 * @TODO 活动签到
+	 * @param activity_id
+	 * @return false表示操作失败，true表示操作成功
+	 */
+	public boolean signActivity(long acti_id, long user_id);
+
+	/**
+	 * @author phn
+	 * @date 2015-3-19
+	 * @TODO 评价活动
+	 * @param au
+	 * @param activity_id
+	 * @param user_id
+	 * @return au，可能为null
+	 */
+	public Au evaluateActivity(Au au, long activity_id, long user_id);
+
+	/**
+	 * @author phn
+	 * @date 2015-3-18
+	 * @TODO 通过id查找
+	 * @param au_id
+	 * @return au，可能为null
+	 */
+	public Au findById(long au_id);
+
+	/**
+	 * @author phn
+	 * @date 2015-3-18
+	 * @TODO 通过活动id和用户id查找活动用户中间表，验证活动是否已参加
+	 * @param activity_id
+	 * @param user_id
+	 * @return 0表示没有参加并且数据库没有记录,-1表示没有参加但是数据库已有记录,1表示已参加
+	 */
+	public byte validActivityIsJoined(long acti_id, long user_id);
+
+	/**
+	 * @author phn
+	 * @date 2015-3-18
+	 * @TODO 通过活动id和用户id查找活动用户中间表，验证活动是否已签到
+	 * @param activity_id
+	 * @param user_id
+	 * @return 0表示没有签到,-1表示没有参加,1表示已签到
+	 */
+	public byte validActivityIsSigned(long activity_id, long user_id);
+
+	/**
+	 * @author phn
+	 * @date 2015-3-18
+	 * @TODO 通过活动id和用户id查找活动用户中间表记录
+	 * @param activity_id
+	 * @param user_id
+	 * @return au可能为null
+	 */
+	public Au findByActiIdAndUserId(long activity_id, long user_id);
+
+	/**
+	 * @author phn
+	 * @date 2015-3-19
+	 * @TODO 通过活动id和用户id查找活动用户中间表，验证活动是否已经评价，是否满足评价条件
+	 * @param activity_id
+	 * @param user_id
+	 * @return -1表示没有参加, 0表示没有签到，1表示已签到没有评价,2表示已评价
+	 */
+	public byte validActivityIsEvaluated(long activity_id, long user_id);
+
+	/**
+	 * @author phn
+	 * @date 2015-3-19
+	 * @TODO 通过活动id和用户id查找活动用户中间表，验证活动是否已经点赞
+	 * @param activity_id
+	 * @param user_id
+	 * @return -1表示数据库有记录即已经参加了但是没有点赞，0表示数据库没有记录,1表示已点赞
+	 */
+	public byte validActivityIsSupported(long activity_id, long user_id);
+
+	/**
+	 * @author phn
+	 * @date 2015-3-19
+	 * @TODO 活动点赞,重载
+	 * @param activity_id
+	 * @param user_id
+	 * @return 操作结果
+	 */
+	public boolean supportActivity(long activity_id, long user_id);
+
+	/**
+	 * @author phn
+	 * @date 2015-3-19
+	 * @TODO 活动点赞,重载
+	 * @param activity_id
+	 * @param user_id
+	 * @param activitySupportStatusGo
+	 *            活动前往 点赞true 或者 取消赞false
+	 * @return 操作结果
+	 */
+	public boolean supportActivity(long activity_id, long user_id,
+			boolean activityIsSupported);
+
+	/**
+	 * @author phn
+	 * @date 2015-4-5
+	 * @TODO 获取当前用户的所有已报名但是未参加的活动
+	 * @param isJoined
+	 * @param isArrived
+	 * @param userId
+	 * @return
+	 */
+	public List<Activity> getJoinedUnArrivedActivity(boolean isJoined,
+			boolean isArrived, long userId);
+
+	/**
+	 * @author phn
+	 * @date 2015-4-5
+	 * @TODO 获取当前用户的所有已签到的活动,查询结构与上述方法类似，但是为了便于以后修改，没有共用。
+	 * @param isJoined
+	 * @param isArrived
+	 * @param userId
+	 * @return
+	 */
+	public List<Activity> getArrivedActivity(boolean isJoined,
+			boolean isArrived, long userId);
+
+	/**
+	 * @author phn
+	 * @date   2015-4-5
+	 * @TODO 获取当前用户所有已报名的活动
+	 * @param isJoined
+	 * @param userId
+	 * @return
+	 */
+	public List<Activity> getAllJoinedActivity(boolean isJoined, long userId);
+
+}

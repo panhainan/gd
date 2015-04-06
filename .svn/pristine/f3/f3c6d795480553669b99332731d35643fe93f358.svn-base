@@ -1,0 +1,169 @@
+/**
+ * 
+ */
+package com.gd.service;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import com.gd.entity.Activity;
+
+/**
+ * @author phn
+ * @date 2014-12-9
+ * @TODO
+ */
+public interface ActivityService {
+	/**
+	 * @author phn
+	 * @date   2015-3-29
+	 * @TODO 模糊查询并分页
+	 * @param searchTxt
+	 * @param currentPage
+	 * @param pageSize
+	 * @return  Map<String, Object>
+	 */
+	public Map<String, Object> fuzzyQueryPagingAcitivity(String searchTxt,
+			int currentPage, int pageSize);
+	/**
+	 * @author phn
+	 * @date 2015-3-27
+	 * @TODO 多条件查询活动
+	 * @param userUniversity
+	 * @param activityType
+	 * @param acti_workingTime
+	 * @return
+	 */
+	public Map<String,Object> multiConditionFindPagingActivity(String userUniversity,
+			String activityType, Date acti_workingTime,int pageSize,int currentPage);
+
+	/**
+	 * @author phn
+	 * @date 2015-3-21
+	 * @TODO 获取热门活动，通过点赞数判断，这里暂时是用来测试的
+	 * @param hotRows
+	 * @return List<Activity>
+	 */
+	public List<Activity> testGetHotActivity(byte hotRows);
+
+	/**
+	 * @author phn
+	 * @date 2014-12-20,查询前10条
+	 * @TODO 用于Android测试
+	 * @return
+	 */
+	public List<Activity> getLastTen();
+
+	/**
+	 * @author phn
+	 * @date 2014-12-16
+	 * @TODO 添加一个活动
+	 * @param acti
+	 * @return
+	 */
+	public long addActivity(Activity acti);
+
+	/**
+	 * @author phn
+	 * @date 2015-3-14
+	 * @TODO 通过更新活动
+	 * @param acti
+	 * @return
+	 */
+	public long updateActivity(Activity acti);
+
+	/**
+	 * @author phn
+	 * @date 2015-3-14
+	 * @TODO 通过ID删除一个活动
+	 * @param acti_id
+	 */
+
+	public void deleteActivity(long acti_id);
+
+	/**
+	 * @author phn >>>>>>> .r7
+	 * @date 2014-12-9
+	 * @TODO 通过活动id搜索活动
+	 * @param acti_id
+	 * @return
+	 */
+	public Activity findById(long acti_id);
+
+	/**
+	 * @author phn
+	 * @date 2014-12-9
+	 * @TODO 通过活动名称来模糊搜索活动
+	 * @param activity_name
+	 * @return
+	 */
+	public List<Activity> findByName(String activity_name);
+
+	/**
+	 * @author phn
+	 * @date 2014-12-9
+	 * @TODO 通过活动类型名称来搜索活动
+	 * @param activity_type
+	 * @return
+	 */
+	public List<Activity> findByType(String activity_type);
+
+	/**
+	 * @author phn
+	 * @date 2014-12-9
+	 * @TODO 通过活动举办地址来搜索活动
+	 * @param activity_address
+	 * @return
+	 */
+	public List<Activity> findByAddr(String activity_address);
+
+	/**
+	 * @author phn
+	 * @date 2014-12-10
+	 * @TODO 通过活动开始时间和结束时间来搜索活动
+	 * @param acti_starttime
+	 * @param acti_endtime
+	 * @return
+	 */
+	public List<Activity> findByStartEndTime(Date acti_starttime,
+			Date acti_endtime);
+
+	/**
+	 * @author phn
+	 * @date 2014-12-10
+	 * @TODO 通过活动发布时间来搜索活动
+	 * @param acti_newtime
+	 * @return
+	 */
+	public List<Activity> findByNewTime(Date acti_newtime);
+
+	/**
+	 * @author phn
+	 * @date 2014-12-10
+	 * @TODO 通过团体组织id搜索发布的活动
+	 * @param team_id
+	 * @return
+	 */
+	public List<Activity> findByTeamId(long team_id);
+
+	/**
+	 * @author phn
+	 * @date 2014-12-10
+	 * @TODO 通过个人用户id搜索发布的活动
+	 * @param stu_id
+	 * @return
+	 */
+	public List<Activity> findByStuId(long stu_id);
+	/**
+	 * @author phn
+	 * @date   2015-4-5
+	 * @TODO 用户获取自己已经发布的活动
+	 * @param userId
+	 * @return
+	 */
+	public List<Activity> findByUserId(long userId);
+
+
+
+}

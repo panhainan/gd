@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gd.dao.RoleDao">
+	<insert id="createRole" parameterType="Role" >
+		insert into role(role,description,available) values(#{role},#{description},#{available})
+	</insert>
+	<delete id="deleteRole" parameterType="long">
+	    delete from role  where role.id = #{roleId}
+	</delete>
+	<delete id="deleteRolePermission" parameterType="long">
+	    delete from role_permission where role_permission.roleid=#{roleId}
+	</delete>
+	
+	<delete id="deleteUserRole" parameterType="long">
+	    delete from user_role where user_role.roleid=#{roleId}
+	</delete>
+	
+</mapper>

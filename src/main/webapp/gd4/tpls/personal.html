@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html >
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>果动</title>
+    <meta name="description" content="">
+    <meta name="author" content="FBI">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0">
+    <link rel="shortcut icon" href="../images/favicon.jpg"></head>
+    <link rel="stylesheet" type="text/css" href="../css/personal.css">
+    <script type="text/javascript" src="../framework/jquery-1.9.1/jquery.js"></script>
+    <script type="text/javascript" src="../framework/handlebars.js"></script>
+    <script type="text/javascript" src="../js/search.js"></script>
+
+    <script id="personalActivity-template" type="text/x-handlebars-template">
+       {{#each this}}
+             <tr>
+                <td class="detail">
+                    <div class="pic">
+                        <a href="" tabindex="-1"> <img width="70" height="90" src="..{{image}}" alt=""></a>
+                    </div>
+                    <div class="info">
+                       
+                        <a href="event.html?activityId={{id}}">{{title}}</a>
+                       
+                        <p class="meta">
+                            <span> {{introduction}}</span>
+                            <span class="pipe">|</span><br />
+                            <span title="{{address}}" class="address">{{address}} </span>
+
+                        </p>
+                        <p>
+                        <a href="javascript:void(0)" onclick="personalComment({{id}})">评论</a>
+                        &nbsp;
+                        <a href="javascript:void(0)">分享</a>
+                        &nbsp;
+                        <a href="javascript:void(0)">点赞</a>
+                        &nbsp;
+                        <a href="javascript:void(0)">已参加({{34}})</a>
+
+                        </p>
+                        <div id="activityId{{id}}"   style="width:518px;display: none;">
+                           <input id="{{id}}"   style="width:100%;height:25px;"/>
+                           <button class="my-btn">提交</button>
+                      </div>
+
+                    </div>
+                </td>
+            </tr>
+      {{/each}}
+    </script>
+
+    <script type="text/javascript" src="../js/format.js"></script>
+    <script type="text/javascript" src="../js/personal.js"></script>
+
+<body>
+    <div id="gd-nav-location" class="nav">
+        <div class="nav-wrap">
+            <div class="nav-primary">
+                <div class="nav-search">
+                    <form action="http://www.douban.com/search" method="get">
+                        <fieldset>
+                            <div class="inp">
+                                <input id="Search" name="q" size="22" title="搜索搜索你感兴趣的内容和人..." maxlength="60" autocomplete="off" value="" placeholder="搜索搜索你感兴趣的内容和人..."></div>
+                            <div class="inp-btn">
+                                <input onclick="Search()" type="submit" value="搜索"></div>
+
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="nav-logo">
+                    <a href="http://www.douban.com">豆瓣社区</a>
+                </div>
+                <div class="nav-items">
+                    <ul>
+                        <li>
+                            <a href="../index.html">首页</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)">分类</a>
+                        </li>
+                        <li>
+                            <a href="activityList.html">热门活动</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)">私信</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)">个人中心</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="wrapper" class="fwrap">
+        <div id="content">
+            <div id="db-usr-profile">
+                <div class="pic">
+                    <a href="#">
+                        <img alt="冯大立" src="../images/user.jpg" width="60px" height="60px"></a>
+                </div>
+                <ul class="info">
+                    <li>
+                        <a href="#">我的果动</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="personal('publish')">我发布</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="personal('notAttend')">待参加</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="personal('join')">已参加</a>
+                    </li>
+                    <!-- <li>
+                    <a href="javascript:void(0)" onclick="personal('comment')">带评论</a>
+                   </li>
+                  -->
+                <li>
+                    <a href="javascript:void(0)">感兴趣</a>
+                </li>
+
+                <li>
+                    <a href="javascript:void(0)">设置</a>
+                </li>
+            </ul>
+        </div>
+        <div class="grid-free clearfix">
+            <div class="article">
+                <table class="events-in-year pic-items">
+                    <tbody id="personalActivity">
+                        <!--  <tr>
+                        <td class="atime" title="我要参加的日期">
+                            <div class="cal-date">
+                                <span class="day">{{day}}</span>
+                                <br>{{week}}</div>
+                            <div class="time">{{time}}</div>
+                        </td>
+                        <td class="detail">
+                            <div class="pic">
+                                <a href="" tabindex="-1">
+                                    <img width="70" height="90" src=".{{image}}" alt=""></a>
+                            </div>
+                            <div class="info">
+                                <p class="title">
+                                    <a href="javascript:void(0)">{{title}}</a>
+                                </p>
+                                <p class="meta">
+                                    {{introduction}}
+                                    <span class="pipe">|</span>
+                                    <br />
+                                    <span title="{{address}}" class="address">{{address}}</span>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

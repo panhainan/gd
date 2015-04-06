@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html ng-app="gd">
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>果动</title>
+  <meta name="description" content="">
+  <meta name="author" content="FBI">
+  <meta http-equiv="Page-Enter" content= "revealTrans(Duration=5.0,Transition=11)"> 
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="shortcut icon" href="../images/favicon.jpg"></head>
+  <link rel="stylesheet" type="text/css" href="../css/activityList.css">
+  <link rel="stylesheet" type="text/css" href="../framework/jquery-ui.min.css">
+  <script type="text/javascript" src="../framework/jquery-1.9.1/jquery.js"></script>
+  <script type="text/javascript" src="../framework/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="../framework/handlebars.js"></script>
+
+  <script id="activityList-template" type="text/x-handlebars-template">
+       {{#each this}}       
+         <li class="list-entry" itemscope="" itemtype="http://data-vocabulary.org/Event">
+                <div class="pic">
+                  <a href="#">
+                    <img  src="{{acti_poster}}" width="110" itemprop="photo"></a>
+                </div>
+                <div class="info">
+                  <div class="title">
+                    <a href="{{acti_id}}" title="{{acti_name}}" itemprop="url">
+                      <span itemprop="summary">{{acti_name}}</span>
+                    </a>
+                  </div>
+
+                  <ul class="event-meta">
+                    <li class="event-time">
+                      <span class="hidden-xs">时间：</span>
+                      {{formatDate acti_starttime }} —— {{formatDate acti_endtime}}
+                    </li>
+                    <li title="{{acti_address}}">
+                      <span class="hidden-xs">地点：</span>
+                   {{acti_address}}
+                    </li>
+                    <li class="fee">
+                      <span class="hidden-xs">类别：</span> <strong>{{acti_type}}</strong>
+                    </li>
+                    <li>
+                      <span class="meta-title">发起：</span>
+                      <a target="db-event-owner" href="http://site.douban.com/210143/">66号放映室</a>
+                    </li>
+                  </ul>
+                  <p class="counts">
+                    <span>{{acti_join}}已参加</span>
+                    <span class="pipe"></span>
+                    <span>{{acti_support}}感兴趣</span>
+                  </p>
+                </div>
+              </li> 
+
+        {{/each}}
+    </script>
+  <script type="text/javascript" src="../js/activityList.js"></script>
+   <script type="text/javascript" src="../js/school.js"></script>
+  <script type="text/javascript" src="../js/format.js"></script>
+<body>
+
+  <div id="gd-nav-location" class="nav">
+    <div class="nav-wrap">
+      <div class="nav-primary">
+        <div class="nav-search">
+          <form  method="get" action="search.html">
+            <fieldset>
+              <div class="inp">
+                <input id="Search" name="q" size="22" title="搜索搜索你感兴趣的内容和人..." maxlength="60" autocomplete="off" value="" placeholder="搜索搜索你感兴趣的内容和人..."></div>
+              <div class="inp-btn">
+                <input type="submit" value="搜索" id="search" onclick="Search()"></div>
+            </fieldset>
+          </form>
+        </div>
+        <div class="nav-logo">
+          <a href="http://www.douban.com">豆瓣社区</a>
+        </div>
+        <div class="nav-items">
+          <ul>
+            <li>
+              <a href="../index.html">首页</a>
+            </li>
+            <li>
+              <a href="http://www.douban.com/explore/">分类</a>
+            </li>
+            <li>
+              <a href="activityList.html">热门活动</a>
+            </li>
+            <li>
+              <a href="http://www.douban.com/online/">私信</a>
+            </li>
+            <li>
+              <a href="personal.html">个人中心</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrapper" id="fwrap">
+    <div id="content">
+      <h1>长沙理工大学最近一周同城活动</h1>
+      <div class="grid-free clearfix">
+
+        <div class="article">
+
+          <div id="db-events-list" class="mod event-mod event-mod-1col">
+            <div class="hd">
+
+              <div class="events-nav">
+                <div class="events-nav-item">
+                  <label class="events-nav-title">类型：</label>
+                  <ul>
+                    <li>
+                      <a href="javascript:void(0)" onclick="get_Type('allType')" >全部</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" onclick="get_Type('音乐')">音乐</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" onclick="get_Type('辩论')">辩论</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" onclick="get_Type('演讲')">演讲</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" onclick="get_Type('聚会')">聚会</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" onclick="get_Type('电影')">电影</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" onclick="get_Type('歌唱')">歌唱</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" onclick="get_Type('运动')">运动</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" onclick="get_Type('公益')">公益</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" onclick="get_Type('旅行')">旅行</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" onclick="get_Type('寻宝')">寻宝</a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="events-nav-item">
+                  <label class="events-nav-title">时间：</label>
+                  <ul>
+
+                    <li>
+                      <a href="javascript:void(0)" onclick="get_Time('oneMonth')">全部</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" onclick="get_Time('oneDay')">今天</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" onclick="get_Time('threeDay')">最近三天</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" onclick="get_Time('oneWeek')">最近一周</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" onclick="get_Time('halfMonth')">最近半个月</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" onclick="get_Time('oneMonth')">最近一个月</a>
+                    </li>
+
+                    <li>
+                      <a id="choose-date" href="javascript:void(0);">选择日期</a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="events-nav-item">
+                  <label class="events-nav-title">学校：</label>
+                  <ul>
+                    <li>
+                      <a name="school" id="school-name" onclick="pop()" href="javascript:void(0)">请选择大学</a>
+                      <div id="choose-box-wrapper">
+                        <div id="choose-box">
+                          <div id="choose-box-title">
+                            <span>选择学校</span>
+                          </div>
+                          <div id="choose-a-province"></div>
+                          <div id="choose-a-school"></div>
+                          <div id="choose-box-bottom">
+                            <input type="botton" onclick="hide()" value="关闭" />
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+
+            <ul class="events-list events-list-pic100 events-list-psmall">
+
+              <div id="activityList">
+              </div>
+              <div >
+                <a href="javascript:void(0)" onclick="load_more()">加载更多</a>
+              </div>
+          </ul>
+        </div>
+      </div>
+
+      <div class="aside">
+        <!-- douban ad begin -->
+        <div id="dale_event_list_by_city_top_right"></div>
+        <!-- douban ad end -->
+        <div class="mod">
+          <a class="bn-big-action" rel="nofollow" href="publish.html">＋发起活动</a>
+        </div>
+        <div class="mod event-mod">
+          <div class="hd">
+            <h2>
+              官方预售
+              <span class="pl rr">
+                <a title="长沙的全部售票活动" href="http://www.douban.com/location/changsha/events/selling">更多》</a>
+              </span>
+            </h2>
+          </div>
+          <ul class="crow simple-list-1col">
+            <li class="col-xs-12 col-sm-6 col-md-12 list-entry">
+              <a class="ll" href="http://www.douban.com/event/23928244/?icn=list-shopitem" onclick="moreurl(this, {from:'loc-event-ticket-118267-0-img'})">
+                <img alt="3/27   猴子王乐队 汽车裙乐队 红咖专场" src="http://img3.douban.com/view/event_poster/small/public/589e225281ef951.jpg" width="48"></a>
+              <div class="info">
+                <p class="event-title">
+                  <a href="http://www.douban.com/event/23928244/?icn=list-shopitem" onclick="moreurl(this, {from:'loc-event-ticket-118267-0-title'})">3/27   猴子王乐队 汽车裙乐队 红咖专场</a>
+                </p>
+                <p class="tip">
+                  03月27日 20:30-23:30
+                  <br>
+                  <span class="on-selling-events-price">¥ 30</span>
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="mod event-mod">
+          <div class="hd">
+            <h2>
+              <span class="pl rr">
+                <a href="http://www.douban.com/location/changsha/hosts/active">更多》</a>
+              </span>
+              长沙活跃的主办方
+            </h2>
+          </div>
+          <ul class="simple-list-1col">
+            <li class="list-entry">
+              <a target="db-host" class="ll" href="http://site.douban.com/happybear/">
+                <img alt="漂流木塔羅占星工坊" src="http://img3.douban.com/view/site/small/public/06fe7cf07b7a4ef.jpg" width="48" height="48"></a>
+              <div class="info">
+                <p class="title">
+                  <a target="db-host" href="http://site.douban.com/happybear/">漂流木塔羅占星工坊</a>
+                </p>
+                <p class="tip">
+                  有
+                  <a target="db-host" href="http://site.douban.com/happybear/widget/events/1293724/">11个活动</a>
+                  正在进行
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
