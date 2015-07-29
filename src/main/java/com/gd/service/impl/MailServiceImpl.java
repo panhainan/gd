@@ -25,7 +25,7 @@ import freemarker.template.Template;
  */
 @Service("mailService")
 public class MailServiceImpl implements MailService {
-	private final String MAIL_FROM_ADDRESS = "panhainanjx@163.com";
+	private final String MAIL_FROM_ADDRESS = "";
 	private final String MAIL_ACTIVE_TEMPLATE = "active";
 	private final String MAIL_FIND_PASS_TEMPLATE = "findpass";
 	@Autowired
